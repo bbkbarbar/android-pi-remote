@@ -15,6 +15,9 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import hu.barbar.comm.client.Client;
+import hu.barbar.comm.util.Msg;
+import hu.barbar.comm.util.RGBMessage;
+import hu.barbar.util.LogManager;
 
 public class MainActivity extends Activity {
 
@@ -34,6 +37,8 @@ public class MainActivity extends Activity {
 	
 	private EditText textArea = null;
 	
+	private LogManager log;
+	
 	private Client myClient = null;
 
 	@Override
@@ -42,6 +47,24 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main);
 		
 		thisApp = MainActivity.this;
+		
+		log = new LogManager(LogManager.Level.INFO) {
+			
+			@Override
+			public void showWarn(String text) {
+				showText(text);
+			}
+			
+			@Override
+			public void showInfo(String text) {
+				showText(text);
+			}
+			
+			@Override
+			public void showError(String text) {
+				showText(text);
+			}
+		}; 
 		
 		initUI();
 
@@ -83,7 +106,7 @@ public class MainActivity extends Activity {
 					colorSample.setBackgroundColor(color);
 				}
 				if(myClient != null && myClient.isConnected()){
-					myClient.sendMessage("Color: " + getColorHex(color));
+					myClient.sendMessage(new RGBMessage("setColor", Color.red(color), Color.green(color), Color.blue(color)));
 				}
 			}
 		};
@@ -116,25 +139,29 @@ public class MainActivity extends Activity {
 				}else{
 					String host = editHost.getText().toString();
 					int port = Integer.valueOf(editPort.getText().toString());
-					myClient = new Client(host, port) {
+					myClient = new Client(host, port, 1000) {
 						
 						@Override
 						protected void showOutput(String arg0) {
 							showText(arg0);
 						}
 						
-						@Override
-						protected void handleRecievedMessage(String arg0) {
-							showText("Received: " + arg0);
-						}
+						public void onConnected(String host, int port) {
+							btnConnect.setText("Disconnect");
+						};
+						
+						public void onDisconnected(String host, int port) {
+							btnConnect.setText("Connect");
+						};
 						
 						@Override
-						public void onConnected() {
-							btnConnect.setText("Disconnect");
+						protected void handleRecievedMessage(Msg message) {
+							showText("Received: " + message.toString());
 						}
 					};
+					myClient.setLogManager(log);
 					myClient.start();
-					btnConnect.setText("Disconnect");
+					//btnConnect.setText("Disconnect");
 				}
 			}
 		});
