@@ -39,7 +39,9 @@ public class MainActivity extends Activity {
 	
 	private LogManager log;
 	
-	private Client myClient = null;
+	//private Client myClient = null;
+	private CommunicationThread comm = null;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +107,15 @@ public class MainActivity extends Activity {
 				if(colorSample != null){
 					colorSample.setBackgroundColor(color);
 				}
-				if(myClient != null && myClient.isConnected()){
-					myClient.sendMessage(new RGBMessage("setColor", Color.red(color), Color.green(color), Color.blue(color)));
+				
+				if(comm != null && comm.isConnected()){
+					
+					comm.sendMessage(new RGBMessage("setColor", Color.red(color), Color.green(color), Color.blue(color)));
 				}
+				/*
+				if(myClient != null && myClient.isConnected()){
+					myClient.sendMessage();
+				}/**/
 			}
 		};
 		for(int i=0; i<seekBars.length; i++){
@@ -139,6 +147,33 @@ public class MainActivity extends Activity {
 				}else{
 					String host = editHost.getText().toString();
 					int port = Integer.valueOf(editPort.getText().toString());
+					
+					comm = new CommunicationThread(host, port, 1000){
+
+						@Override
+						public void showText(String text) {
+							MainActivity.this.showText(text);
+						}
+
+						@Override
+						public void onClientConnected(String host, int port) {
+							MainActivity.this.onClientConnected(host, port);
+						}
+
+						@Override
+						protected void handleRecievedMessage(Msg message) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						protected void onDisconnected(String host2, int port2) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					};
+					/*
 					myClient = new Client(host, port, 1000) {
 						
 						@Override
@@ -147,11 +182,11 @@ public class MainActivity extends Activity {
 						}
 						
 						public void onConnected(String host, int port) {
-							btnConnect.setText("Disconnect");
+							MainActivity.this.onClientConnected(host, port);
 						};
 						
 						public void onDisconnected(String host, int port) {
-							btnConnect.setText("Connect");
+							//btnConnect.setText("Connect");
 						};
 						
 						@Override
@@ -159,8 +194,17 @@ public class MainActivity extends Activity {
 							showText("Received: " + message.toString());
 						}
 					};
+					/**/
+					
+					comm.setLogManager(log);
+					comm.start();
+					
+					/*
 					myClient.setLogManager(log);
 					myClient.start();
+					/**/
+					
+					
 					//btnConnect.setText("Disconnect");
 				}
 			}
@@ -169,11 +213,15 @@ public class MainActivity extends Activity {
 	}
 	
 	
+	public void onClientConnected(String host, int port){
+		btnConnect.setText("Disconnect");
+	}
+	
+	
 	private void disconnect(){
-		if(myClient != null){
-			myClient.disconnect();
+		if(comm != null){
+			comm.disconnect();
 			btnConnect.setText("Connect");
-			myClient = null;
 		}
 	}
 	
@@ -230,10 +278,6 @@ public class MainActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	public void storeClient(Client myClient2) {
-		this.myClient = myClient2;
 	}
 
 }
