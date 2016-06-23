@@ -8,6 +8,8 @@ public abstract class CommunicationThread extends Thread {
 	
 	private static final int DEFAULT_TIMEOUT_FOR_CONNECTION_READY = 1000;
 	
+	private MainActivity parent = null;
+	
 	private int timeOutForConnectionReadyInMs = DEFAULT_TIMEOUT_FOR_CONNECTION_READY;
 	private String host = null;
 	private int port = -1;
@@ -15,7 +17,7 @@ public abstract class CommunicationThread extends Thread {
 	private Client myClient = null;
 	
 	
-	public CommunicationThread(String host, int port, int timeoutForReady) {
+	public CommunicationThread(MainActivity app, String host, int port, int timeoutForReady) {
 		this.timeOutForConnectionReadyInMs = timeoutForReady;
 		this.host = host;
 		this.port = port;
@@ -30,7 +32,7 @@ public abstract class CommunicationThread extends Thread {
 	}
 	
 	private void init(){
-		myClient = new Client(host, port, 1000) {
+		myClient = new Client(host, port, this.timeOutForConnectionReadyInMs) {
 			
 			@Override
 			protected void showOutput(String arg0) {

@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import hu.barbar.comm.client.Client;
 import hu.barbar.comm.util.Msg;
 import hu.barbar.comm.util.RGBMessage;
 import hu.barbar.util.LogManager;
@@ -80,7 +79,7 @@ public class MainActivity extends Activity {
 		btnSelectColor.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				sendColor();
 			}
 		});
 		
@@ -110,7 +109,7 @@ public class MainActivity extends Activity {
 				
 				if(comm != null && comm.isConnected()){
 					
-					comm.sendMessage(new RGBMessage("setColor", Color.red(color), Color.green(color), Color.blue(color)));
+					//comm.sendMessage(new RGBMessage("setColor", Color.red(color), Color.green(color), Color.blue(color)));
 				}
 				/*
 				if(myClient != null && myClient.isConnected()){
@@ -148,7 +147,7 @@ public class MainActivity extends Activity {
 					String host = editHost.getText().toString();
 					int port = Integer.valueOf(editPort.getText().toString());
 					
-					comm = new CommunicationThread(host, port, 1000){
+					comm = new CommunicationThread(thisApp, host, port, 1000){
 
 						@Override
 						public void showText(String text) {
@@ -157,13 +156,30 @@ public class MainActivity extends Activity {
 
 						@Override
 						public void onClientConnected(String host, int port) {
-							MainActivity.this.onClientConnected(host, port);
+							new Thread() {
+						        public void run() {
+						        	runOnUiThread(new Runnable() {
+					                    @Override
+					                    public void run() {
+					                    	MainActivity.this.btnConnect.setText("Disconnect");
+					                    }
+					                });
+						        }
+						    }.start();
 						}
 
 						@Override
-						protected void handleRecievedMessage(Msg message) {
-							// TODO Auto-generated method stub
-							
+						protected void handleRecievedMessage(final Msg message) {
+							new Thread() {
+						        public void run() {
+						        	runOnUiThread(new Runnable() {
+					                    @Override
+					                    public void run() {
+					                    	MainActivity.this.showText("Received: " + message.toString());
+					                    }
+					                });
+						        }
+						    }.start();
 						}
 
 						@Override
@@ -173,6 +189,7 @@ public class MainActivity extends Activity {
 						}
 						
 					};
+					
 					/*
 					myClient = new Client(host, port, 1000) {
 						
@@ -221,18 +238,31 @@ public class MainActivity extends Activity {
 	private void disconnect(){
 		if(comm != null){
 			comm.disconnect();
-			btnConnect.setText("Connect");
+			try{
+				btnConnect.setText("Connect");
+			}catch(Exception doesNotMatterWhenTryToDisconnectBecauseAppClosing){}
 		}
 	}
 	
-	public void showText(String text){
-		try{
-			if(textArea != null){
-				textArea.append(text + "\n");
-			}
-		}catch(Exception e){
-			Log.e("MainActivity.showText", e.getMessage());
-		}
+	public void showText(final String text){
+		
+		new Thread() {
+	        public void run() {
+	        	runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    	try{
+                			if(textArea != null){
+                				textArea.append(text + "\n");
+                			}
+                		}catch(Exception e){
+                			Log.e("MainActivity.showText", e.getMessage());
+                		}
+                    }
+                });
+	        }
+	    }.start();
+		
 	}
 	
 	private int getColorFromSeekBars(){
@@ -261,6 +291,15 @@ public class MainActivity extends Activity {
 		return res;
 	}
 	
+	private void sendColor(){
+		if(comm != null){
+			comm.sendMessage(new RGBMessage("setColor", 
+											seekBars[RED].getProgress(), 
+											seekBars[GREEN].getProgress(), 
+											seekBars[BLUE].getProgress()
+			));
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -280,4 +319,11 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	
+	@Override
+	protected void onPause() {
+		disconnect();
+		super.onPause();
+	}
+	
 }

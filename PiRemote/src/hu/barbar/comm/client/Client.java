@@ -162,7 +162,7 @@ public abstract class Client extends Thread {
 
 	public boolean isConnected(){
 		//TODO
-		return false;
+		return true;
 	}
 
 
