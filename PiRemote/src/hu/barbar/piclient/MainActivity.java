@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import hu.barbar.comm.client.Client;
+import hu.barbar.comm.util.Msg;
+import hu.barbar.comm.util.RGBMessage;
+import hu.barbar.util.LogManager;
 
 public class MainActivity extends Activity {
 
@@ -34,7 +36,11 @@ public class MainActivity extends Activity {
 	
 	private EditText textArea = null;
 	
-	private Client myClient = null;
+	private LogManager log;
+	
+	//private Client myClient = null;
+	private CommunicationThread comm = null;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,24 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main);
 		
 		thisApp = MainActivity.this;
+		
+		log = new LogManager(LogManager.Level.INFO) {
+			
+			@Override
+			public void showWarn(String text) {
+				showText(text);
+			}
+			
+			@Override
+			public void showInfo(String text) {
+				showText(text);
+			}
+			
+			@Override
+			public void showError(String text) {
+				showText(text);
+			}
+		}; 
 		
 		initUI();
 
@@ -55,7 +79,7 @@ public class MainActivity extends Activity {
 		btnSelectColor.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				sendColor();
 			}
 		});
 		
@@ -82,9 +106,15 @@ public class MainActivity extends Activity {
 				if(colorSample != null){
 					colorSample.setBackgroundColor(color);
 				}
-				if(myClient != null && myClient.isConnected()){
-					myClient.sendMessage("Color: " + getColorHex(color));
+				
+				if(comm != null && comm.isConnected()){
+					
+					//comm.sendMessage(new RGBMessage("setColor", Color.red(color), Color.green(color), Color.blue(color)));
 				}
+				/*
+				if(myClient != null && myClient.isConnected()){
+					myClient.sendMessage();
+				}/**/
 			}
 		};
 		for(int i=0; i<seekBars.length; i++){
@@ -116,25 +146,83 @@ public class MainActivity extends Activity {
 				}else{
 					String host = editHost.getText().toString();
 					int port = Integer.valueOf(editPort.getText().toString());
-					myClient = new Client(host, port) {
+					
+					comm = new CommunicationThread(thisApp, host, port, 1000){
+
+						@Override
+						public void showText(String text) {
+							MainActivity.this.showText(text);
+						}
+
+						@Override
+						public void onClientConnected(String host, int port) {
+							new Thread() {
+						        public void run() {
+						        	runOnUiThread(new Runnable() {
+					                    @Override
+					                    public void run() {
+					                    	MainActivity.this.btnConnect.setText("Disconnect");
+					                    }
+					                });
+						        }
+						    }.start();
+						}
+
+						@Override
+						protected void handleRecievedMessage(final Msg message) {
+							new Thread() {
+						        public void run() {
+						        	runOnUiThread(new Runnable() {
+					                    @Override
+					                    public void run() {
+					                    	MainActivity.this.showText("Received: " + message.toString());
+					                    }
+					                });
+						        }
+						    }.start();
+						}
+
+						@Override
+						protected void onDisconnected(String host2, int port2) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					};
+					
+					/*
+					myClient = new Client(host, port, 1000) {
 						
 						@Override
 						protected void showOutput(String arg0) {
 							showText(arg0);
 						}
 						
-						@Override
-						protected void handleRecievedMessage(String arg0) {
-							showText("Received: " + arg0);
-						}
+						public void onConnected(String host, int port) {
+							MainActivity.this.onClientConnected(host, port);
+						};
+						
+						public void onDisconnected(String host, int port) {
+							//btnConnect.setText("Connect");
+						};
 						
 						@Override
-						public void onConnected() {
-							btnConnect.setText("Disconnect");
+						protected void handleRecievedMessage(Msg message) {
+							showText("Received: " + message.toString());
 						}
 					};
+					/**/
+					
+					comm.setLogManager(log);
+					comm.start();
+					
+					/*
+					myClient.setLogManager(log);
 					myClient.start();
-					btnConnect.setText("Disconnect");
+					/**/
+					
+					
+					//btnConnect.setText("Disconnect");
 				}
 			}
 		});
@@ -142,22 +230,39 @@ public class MainActivity extends Activity {
 	}
 	
 	
+	public void onClientConnected(String host, int port){
+		btnConnect.setText("Disconnect");
+	}
+	
+	
 	private void disconnect(){
-		if(myClient != null){
-			myClient.disconnect();
-			btnConnect.setText("Connect");
-			myClient = null;
+		if(comm != null){
+			comm.disconnect();
+			try{
+				btnConnect.setText("Connect");
+			}catch(Exception doesNotMatterWhenTryToDisconnectBecauseAppClosing){}
 		}
 	}
 	
-	public void showText(String text){
-		try{
-			if(textArea != null){
-				textArea.append(text + "\n");
-			}
-		}catch(Exception e){
-			Log.e("MainActivity.showText", e.getMessage());
-		}
+	public void showText(final String text){
+		
+		new Thread() {
+	        public void run() {
+	        	runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    	try{
+                			if(textArea != null){
+                				textArea.append(text + "\n");
+                			}
+                		}catch(Exception e){
+                			Log.e("MainActivity.showText", e.getMessage());
+                		}
+                    }
+                });
+	        }
+	    }.start();
+		
 	}
 	
 	private int getColorFromSeekBars(){
@@ -186,6 +291,15 @@ public class MainActivity extends Activity {
 		return res;
 	}
 	
+	private void sendColor(){
+		if(comm != null){
+			comm.sendMessage(new RGBMessage("setColor", 
+											seekBars[RED].getProgress(), 
+											seekBars[GREEN].getProgress(), 
+											seekBars[BLUE].getProgress()
+			));
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -205,8 +319,11 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void storeClient(Client myClient2) {
-		this.myClient = myClient2;
+	
+	@Override
+	protected void onPause() {
+		disconnect();
+		super.onPause();
 	}
-
+	
 }
