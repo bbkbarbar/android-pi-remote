@@ -117,6 +117,28 @@
     	
     	</LinearLayout>
     	
+    	<RelativeLayout 
+	    	android:layout_height="wrap_content"
+	    	android:layout_width="fill_parent" 
+	    >
+    	    
+    	    <Button 
+    	    	android:id="@+id/btn_send"
+    	    	android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentRight="true"
+    			android:text="Send"
+    	    />
+    	    <EditText 
+    	    	android:id="@+id/edit_command_line"
+    	    	android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:layout_toLeftOf="@id/btn_send"
+    			android:layout_alignParentLeft="true"
+    	    />
+    		
+    	</RelativeLayout>
+    	
     	<EditText 
     		android:id="@+id/text_area"
     		android:text=""

@@ -34,6 +34,9 @@ public class MainActivity extends Activity {
 	private LinearLayout colorSample = null;
 	private TextView tvColor = null;
 	
+	private Button btnSendCommand = null;
+	private EditText commandLine = null;
+	
 	private EditText textArea = null;
 	
 	private LogManager log;
@@ -227,6 +230,16 @@ public class MainActivity extends Activity {
 			}
 		});
 		
+		
+		commandLine = (EditText) findViewById(R.id.edit_command_line);
+		btnSendCommand = (Button) findViewById(R.id.btn_send);
+		btnSendCommand.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sendCommand();
+				commandLine.setText("");
+			}
+		});
 	}
 	
 	
@@ -298,6 +311,15 @@ public class MainActivity extends Activity {
 											seekBars[GREEN].getProgress(), 
 											seekBars[BLUE].getProgress()
 			));
+		}
+	}
+	
+	private void sendCommand(){
+		if(comm != null){
+			Msg toSend = new Msg(commandLine.getText().toString(), Msg.Types.COMMAND);
+			if( comm.sendMessage(toSend) ){
+				showText("Sent: " + toSend.toString());
+			}
 		}
 	}
 
