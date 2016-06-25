@@ -19,11 +19,9 @@ public abstract class ClientThread extends Thread {
 	private String host = null;
 	private int port = 0;
 	
-	//private BufferedReader in = null;
 	InputStream is = null;
 	OutputStream os = null;
 	private ObjectInputStream objIn = null;
-	//private PrintWriter out = null;
 	private ObjectOutputStream objOut = null;
 	
 	private boolean isInitialized = false;
@@ -56,13 +54,8 @@ public abstract class ClientThread extends Thread {
 				System.out.println("Socket is CLOSED.");
 			}
 		
-			//in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
-			//out = new PrintWriter(mySocket.getOutputStream(), true);
-			System.out.println("Init streams.");
 			objIn = new ObjectInputStream(mySocket.getInputStream());
 			objOut = new ObjectOutputStream(mySocket.getOutputStream());
-			/**/
-			System.out.println("Streams OK");
 			isInitialized = true;
 			
 			int exceptionCounter = 0;
@@ -85,7 +78,6 @@ public abstract class ClientThread extends Thread {
 			System.out.println(e1.toString());
 			e1.printStackTrace();
 		} catch (Exception e) {
-			// TODO handle exception
 			System.out.println(e.toString());
 			e.printStackTrace();
 		}

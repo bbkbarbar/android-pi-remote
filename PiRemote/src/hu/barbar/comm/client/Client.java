@@ -35,6 +35,7 @@ public abstract class Client extends Thread {
 	
 	private Socket socket = null;
 	private boolean initialized = false;
+	private boolean connected = false;
 	private boolean wantToDisconnect = false;
 	
 
@@ -134,11 +135,12 @@ public abstract class Client extends Thread {
 		
 		initialized = true;
 		
-		//TODO: maybe removable:
+		//Maybe removable:
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {}
 		
+		this.connected = true;
 		this.onConnected(host, port);
 		
 		return;
@@ -161,8 +163,7 @@ public abstract class Client extends Thread {
 
 
 	public boolean isConnected(){
-		//TODO
-		return true;
+		return this.connected;
 	}
 
 
@@ -261,6 +262,7 @@ public abstract class Client extends Thread {
 		
 		
 		this.initialized = false;
+		this.connected = false;
 		
 		this.onDisconnected(host, port);
 		
