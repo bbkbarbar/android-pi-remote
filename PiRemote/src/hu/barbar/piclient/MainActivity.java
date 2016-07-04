@@ -164,6 +164,7 @@ public class MainActivity extends Activity {
 						        	runOnUiThread(new Runnable() {
 					                    @Override
 					                    public void run() {
+					                    	MainActivity.this.showText("Connected: " + comm.getHost() + " @ " + comm.getPort());
 					                    	MainActivity.this.btnConnect.setText("Disconnect");
 					                    }
 					                });
@@ -306,11 +307,18 @@ public class MainActivity extends Activity {
 	
 	private void sendColor(){
 		if(comm != null){
-			comm.sendMessage(new RGBMessage("setColor", 
-											seekBars[RED].getProgress(), 
-											seekBars[GREEN].getProgress(), 
-											seekBars[BLUE].getProgress()
-			));
+			RGBMessage m =
+			new RGBMessage("setColor", 
+							seekBars[RED].getProgress(), 
+							seekBars[GREEN].getProgress(), 
+							seekBars[BLUE].getProgress()
+			);
+			if(comm.sendMessage(m)){
+				showText("Sent: ");
+			}else{
+				showText("NOT sent: ");
+			}
+			showText(m.toString());
 		}
 	}
 	
@@ -319,6 +327,8 @@ public class MainActivity extends Activity {
 			Msg toSend = new Msg(commandLine.getText().toString(), Msg.Types.COMMAND);
 			if( comm.sendMessage(toSend) ){
 				showText("Sent: " + toSend.toString());
+			}else{
+				showText("Can NOT send message");
 			}
 		}
 	}

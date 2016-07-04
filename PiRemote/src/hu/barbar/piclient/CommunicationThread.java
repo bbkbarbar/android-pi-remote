@@ -1,5 +1,7 @@
 package hu.barbar.piclient;
 
+import android.util.Log;
+import android.widget.Toast;
 import hu.barbar.comm.client.Client;
 import hu.barbar.comm.util.Msg;
 import hu.barbar.util.LogManager;
@@ -74,7 +76,13 @@ public abstract class CommunicationThread extends Thread {
 
 	public synchronized boolean sendMessage(Msg message) {
 		if(myClient != null){
-			return myClient.sendMessage(message);
+			if( myClient.sendMessage(message) ){
+				Log.e("CommThread", "SENT");
+				return true;
+			}else{
+				Log.e("CommThread", "NOT SENT");
+				return false;
+			}
 		}
 		return false;
 	}
@@ -97,6 +105,14 @@ public abstract class CommunicationThread extends Thread {
 	public synchronized void setLogManager(LogManager log) {
 		if(myClient != null)
 			myClient.setLogManager(log);
+	}
+
+	public String getHost() {
+		return this.host;
+	}
+
+	public int getPort() {
+		return this.port;
 	}
 	
 }

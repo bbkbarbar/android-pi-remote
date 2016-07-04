@@ -16,7 +16,7 @@ public abstract class Client extends Thread {
 	public static final String version = "2.0.0";
 	
 	
-	protected int TIMEOUT_WAIT_WHILE_INITIALIZED_IN_MS = 1000;
+	protected int TIMEOUT_WAIT_WHILE_INITIALIZED_IN_MS = 3000;
 	private static final int DELAY_BETWEEN_CHECKS_FOR_INITIALIZED_STATE_IN_MS = 50;
 	
 	private LogManager log = null;
