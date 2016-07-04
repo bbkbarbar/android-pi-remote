@@ -6,11 +6,12 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import android.os.AsyncTask;
 import hu.barbar.comm.util.Commands;
 import hu.barbar.comm.util.Msg;
 import hu.barbar.util.LogManager;
 
-public abstract class Client extends Thread {
+public abstract class Client extends AsyncTask<Void, Void, Void> {
 
 	public static final int versionCode = 200;
 	public static final String version = "2.0.0";
@@ -64,10 +65,17 @@ public abstract class Client extends Thread {
 	}
 	
 	@Override
+	protected Void doInBackground(Void... arg0) {
+		this.connect(host);
+		return null;
+	}
+	
+	/*
+	@Override
 	public void run() {
 		this.connect(host);
 		super.run();
-	}
+	}/**/
 	
 	/**
      *  Connect to specified host

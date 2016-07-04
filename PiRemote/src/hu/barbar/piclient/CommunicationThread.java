@@ -62,7 +62,7 @@ public abstract class CommunicationThread extends Thread {
 	public void run() {
 		
 		if(myClient != null){
-			myClient.start();
+			myClient.execute();
 			super.run();
 		}else
 			this.interrupt();

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import hu.barbar.comm.client.Client;
 import hu.barbar.comm.util.Msg;
 import hu.barbar.comm.util.RGBMessage;
 import hu.barbar.util.LogManager;
@@ -41,8 +42,8 @@ public class MainActivity extends Activity {
 	
 	private LogManager log;
 	
-	//private Client myClient = null;
-	private CommunicationThread comm = null;
+	private Client myClient = null;
+	//private CommunicationThread comm = null;
 	
 
 	@Override
@@ -110,7 +111,7 @@ public class MainActivity extends Activity {
 					colorSample.setBackgroundColor(color);
 				}
 				
-				if(comm != null && comm.isConnected()){
+				if(myClient != null && myClient.isConnected()){
 					
 					//comm.sendMessage(new RGBMessage("setColor", Color.red(color), Color.green(color), Color.blue(color)));
 				}
@@ -150,6 +151,20 @@ public class MainActivity extends Activity {
 					String host = editHost.getText().toString();
 					int port = Integer.valueOf(editPort.getText().toString());
 					
+					/*
+					myClient = new Client(host, port) {
+						
+						@Override
+						protected void showOutput(String text) {
+							MainActivity.this.showText(text);
+						}
+						
+						@Override
+						protected void handleRecievedMessage(Msg message) {
+							MainActivity.this.showText("Received: " + message.toString());
+						}
+					};/**/
+					/*
 					comm = new CommunicationThread(thisApp, host, port, 1000){
 
 						@Override
@@ -192,9 +207,9 @@ public class MainActivity extends Activity {
 							
 						}
 						
-					};
+					};/**/
 					
-					/*
+					
 					myClient = new Client(host, port, 1000) {
 						
 						@Override
@@ -217,12 +232,13 @@ public class MainActivity extends Activity {
 					};
 					/**/
 					
+					/*
 					comm.setLogManager(log);
 					comm.start();
+					/**/
 					
-					/*
 					myClient.setLogManager(log);
-					myClient.start();
+					myClient.execute();
 					/**/
 					
 					
@@ -250,8 +266,8 @@ public class MainActivity extends Activity {
 	
 	
 	private void disconnect(){
-		if(comm != null){
-			comm.disconnect();
+		if(myClient != null){
+			myClient.disconnect();
 			try{
 				btnConnect.setText("Connect");
 			}catch(Exception doesNotMatterWhenTryToDisconnectBecauseAppClosing){}
@@ -306,14 +322,14 @@ public class MainActivity extends Activity {
 	}
 	
 	private void sendColor(){
-		if(comm != null){
+		if(myClient != null){
 			RGBMessage m =
 			new RGBMessage("setColor", 
 							seekBars[RED].getProgress(), 
 							seekBars[GREEN].getProgress(), 
 							seekBars[BLUE].getProgress()
 			);
-			if(comm.sendMessage(m)){
+			if(myClient.sendMessage(m)){
 				showText("Sent: ");
 			}else{
 				showText("NOT sent: ");
@@ -323,9 +339,9 @@ public class MainActivity extends Activity {
 	}
 	
 	private void sendCommand(){
-		if(comm != null){
+		if(myClient != null){
 			Msg toSend = new Msg(commandLine.getText().toString(), Msg.Types.COMMAND);
-			if( comm.sendMessage(toSend) ){
+			if( myClient.sendMessage(toSend) ){
 				showText("Sent: " + toSend.toString());
 			}else{
 				showText("Can NOT send message");
