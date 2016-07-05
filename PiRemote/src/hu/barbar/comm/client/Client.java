@@ -108,19 +108,6 @@ public abstract class Client extends Thread {
         	return;
         }
  
-		
-		/**
-		 *  Create and start Sender thread
-		 */
-		//this.userName = getUsername();
-        //sender = new Sender(out, this.userName);
-		sender = new SenderThread(objOut, log);
-		if(log != null)
-			log.i("Sender created.");
-        sender.setDaemon(true);
-        sender.start();
- 
-
         /**
 		 *  Create and start Receiver thread
 		 */
@@ -132,6 +119,18 @@ public abstract class Client extends Thread {
 			
 		};
 		receiver.start();
+		
+		/**
+		 *  Create and start Sender thread
+		 */
+		sender = new SenderThread(objOut, log);
+		if(log != null)
+			log.d("Sender created.");
+
+        //sender.setDaemon(true);
+        sender.start();
+ 
+
 		
 		initialized = true;
 		
@@ -270,6 +269,10 @@ public abstract class Client extends Thread {
 	
 	public boolean getWantToDisconnect(){
 		return this.wantToDisconnect;
+	}
+
+	public void setWantToDisconnect(boolean wantToDisconnect){
+		this.wantToDisconnect = wantToDisconnect;
 	}
 
 }
