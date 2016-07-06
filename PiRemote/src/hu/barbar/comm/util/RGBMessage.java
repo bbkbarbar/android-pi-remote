@@ -32,6 +32,61 @@ public class RGBMessage extends Msg {
 		
 	}
 	
+	public static RGBMessage createInstance(String line){
+		int resolvedType = Msg.Types.RGB_COMMAND;
+		int resolvedR = 0;
+		int resolvedG = 0;
+		int resolvedB = 0;
+		String resolvedContent = "";
+
+		String[] parts = line.split(Msg.ARGUMENT_SEPARATOR);
+		for(int i=0; i<parts.length; i++){
+			String[] data = parts[i].split("=");
+			
+			if(data[0].equals("content")){
+				resolvedContent = data[1];
+			}
+			else
+			if(data[0].equals("r")){
+				resolvedR = Integer.valueOf(data[1]);
+			}
+			else
+			if(data[0].equals("g")){
+				resolvedG = Integer.valueOf(data[1]);
+			}
+			else
+			if(data[0].equals("b")){
+				resolvedB = Integer.valueOf(data[1]);
+			}
+
+		}
+		return new RGBMessage(resolvedContent, resolvedR, resolvedG, resolvedB);
+	}
+
+	public String getInstanceAsLine(){
+		return removeLBs(getParameterLine("content", content) + Msg.ARGUMENT_SEPARATOR
+			 + getParameterLine("type", this.type + "") + Msg.ARGUMENT_SEPARATOR
+			 + getParameterLine("r", this.colorR + "") + Msg.ARGUMENT_SEPARATOR
+			 + getParameterLine("g", this.colorG + "") + Msg.ARGUMENT_SEPARATOR
+			 + getParameterLine("b", this.colorB + "")
+		);
+	}
+	
+	public boolean equals(RGBMessage otherInstance){
+		if(this.type != otherInstance.getType()){
+			return false;
+		}
+		if(!this.content.equals(otherInstance.getContent())){
+			return false;
+		}
+		if( (this.getRed()   != otherInstance.getRed())   ||
+			(this.getGreen() != otherInstance.getGreen()) ||
+			(this.getBlue()  != otherInstance.getBlue())  ){
+			return false;
+		}
+		return true;
+	}
+
 	private static int cribTo8bit(int val){
 		if(val < 0)
 			return 0;

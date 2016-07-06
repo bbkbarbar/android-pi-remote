@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
 	private EditText editHost = null,
 					 editPort = null;
 	
+	private OnSeekBarChangeListener osbcl;
 	private Button btnSelectColor = null;
 	private SeekBar[] seekBars = null;
 	private static final int RED = 0,
@@ -71,29 +72,15 @@ public class MainActivity extends Activity {
 			}
 		}; 
 		
+		init();
+		
 		initUI();
 
 	}
 	
-	private void initUI(){
-		
-		textArea = (EditText) findViewById(R.id.text_area); 
-		
-		btnSelectColor = (Button) findViewById(R.id.btn_select_color);
-		btnSelectColor.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				sendColor();
-			}
-		});
-		
-		colorSample = (LinearLayout) findViewById(R.id.color_sample);
-
-		seekBars = new SeekBar[3];
-		seekBars[RED] = (SeekBar) findViewById(R.id.sb_color_red);
-		seekBars[GREEN] = (SeekBar) findViewById(R.id.sb_color_green);
-		seekBars[BLUE] = (SeekBar) findViewById(R.id.sb_color_blue);
-		OnSeekBarChangeListener osbcl = new OnSeekBarChangeListener() {
+	private void init(){
+	
+		osbcl = new OnSeekBarChangeListener() {
 			
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {}
@@ -121,6 +108,28 @@ public class MainActivity extends Activity {
 				}/**/
 			}
 		};
+		
+	}
+	
+	private void initUI(){
+		
+		textArea = (EditText) findViewById(R.id.text_area); 
+		
+		btnSelectColor = (Button) findViewById(R.id.btn_select_color);
+		btnSelectColor.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sendColor();
+			}
+		});
+		
+		colorSample = (LinearLayout) findViewById(R.id.color_sample);
+
+		seekBars = new SeekBar[3];
+		seekBars[RED] = (SeekBar) findViewById(R.id.sb_color_red);
+		seekBars[GREEN] = (SeekBar) findViewById(R.id.sb_color_green);
+		seekBars[BLUE] = (SeekBar) findViewById(R.id.sb_color_blue);
+		
 		for(int i=0; i<seekBars.length; i++){
 			seekBars[i].setMax(255);
 			seekBars[i].setProgress(255);
@@ -151,7 +160,7 @@ public class MainActivity extends Activity {
 					String host = editHost.getText().toString();
 					int port = Integer.valueOf(editPort.getText().toString());
 					
-					comm = new CommunicationThread(thisApp, host, port, 1000){
+					comm = new CommunicationThread(thisApp, host, port, 3000){
 
 						@Override
 						public void showText(String text) {
@@ -189,8 +198,9 @@ public class MainActivity extends Activity {
 
 						@Override
 						protected void onDisconnected(String host2, int port2) {
-							// TODO Auto-generated method stub
-							
+							try{
+								showText("Disconnected..");
+							}catch(Exception doesNotMatterException){}
 						}
 						
 					};
@@ -226,12 +236,14 @@ public class MainActivity extends Activity {
 					myClient.start();
 					/**/
 					
-					
-					//btnConnect.setText("Disconnect");
 				}
 			}
 		});
 		
+		
+		/**
+		 *  Command line, send command feature
+		 */
 		
 		commandLine = (EditText) findViewById(R.id.edit_command_line);
 		btnSendCommand = (Button) findViewById(R.id.btn_send);
@@ -317,7 +329,7 @@ public class MainActivity extends Activity {
 			if(comm.sendMessage(m)){
 				showText("Sent: ");
 			}else{
-				showText("NOT sent: ");
+				showText("Could not sent: ");
 			}
 			showText(m.toString());
 		}

@@ -16,7 +16,8 @@ public class Msg implements Serializable{
 		public static final int UNDEFINED = 0,
 								COMMAND = 1,
 								PLAIN_TEXT = 2, 
-								RGB_COMMAND = 3;
+								RGB_COMMAND = 3,
+								REQUEST = 4;
 		
 		public static String getTypeText(int type){
 			switch (type) {
@@ -26,6 +27,8 @@ public class Msg implements Serializable{
 				return "Plain text";
 			case Types.RGB_COMMAND:
 				return "RGB command";
+			case Types.REQUEST:
+				return "Request";
 
 			default:
 				return "Undefined";
@@ -34,8 +37,12 @@ public class Msg implements Serializable{
 		
 	}
 
-	private int type = Types.UNDEFINED; 
-	private String content = null;
+	protected static final String ARGUMENT_SEPARATOR = ", ";
+
+	protected int type = Types.UNDEFINED; 
+
+	protected String content = null;
+	
 	
 	
 	public Msg(String text){
@@ -48,6 +55,49 @@ public class Msg implements Serializable{
 		this.type = type;
 	}
 	
+	public static Msg createInstance(String line){
+		int resolvedType = Types.UNDEFINED;
+		String resolvedContent = "";
+
+		String[] parts = line.split(Msg.ARGUMENT_SEPARATOR);
+		for(int i=0; i < parts.length; i++){
+			String[] data = parts[i].split("=");
+			if(data[0].equals("type")){
+				resolvedType = Integer.valueOf(data[1]);
+			}else
+			if(data[0].equals("content")){
+				resolvedContent = data[1];
+			}
+		}
+		return new Msg(resolvedContent, resolvedType);
+	}
+
+	protected String removeLBs(String s){
+		return s.replace("\n", " ");
+	}
+	
+	protected String getParameterLine(String item, String value){
+		return item + "=" + value;
+	}
+
+	public String getInstanceAsLine(){
+		return getParameterLine("content", removeLBs(this.content)) + Msg.ARGUMENT_SEPARATOR
+			 + getParameterLine("type", this.type + "")
+		;
+	}
+	
+
+	public boolean equals(Msg otherInstance){
+		if(this.type != otherInstance.getType()){
+			return false;
+		}
+		if(!this.content.equals(otherInstance.getContent())){
+			return false;
+		}
+		return true;
+	}
+
+
 	
 	public int getType(){
 		return this.type;

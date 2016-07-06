@@ -1,14 +1,15 @@
 package hu.barbar.comm.client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 
 import hu.barbar.comm.util.Msg;
 import hu.barbar.util.LogManager;
 
 public abstract class ReceiverThread extends Thread {
 
-	private ObjectInputStream objIn = null;
+	//private ObjectInputStream objIn = null;
+	private BufferedReader in = null;
 	private Client myParent = null;
 	private LogManager log = null;
 	
@@ -16,19 +17,29 @@ public abstract class ReceiverThread extends Thread {
 	 * @param in ObjectInputStream from client's socket.
 	 * @param log 
 	 */
+	/*
 	public ReceiverThread(ObjectInputStream in, Client parent, LogManager log){
 		this.objIn = in;
 		this.myParent = parent;
+		this.log = log2;
+	}/**/
+	
+	public ReceiverThread(BufferedReader in, Client parent, LogManager log2) {
+		this.in = in;
+		this.myParent = parent;
+		this.log = log2;
 	}
 	
 	@Override
 	public void run() {
 		
 		Msg msg = null;
-		
+		String line = null;
 		try {
 
-			while( (msg = (Msg) objIn.readObject()) != null ){
+			//while( (msg = (Msg) objIn.readObject()) != null ){
+			while( (line = in.readLine()) != null ){
+				msg = Msg.createInstance(line);
 				handleMessage(msg);
 			}
 			
@@ -38,11 +49,11 @@ public abstract class ReceiverThread extends Thread {
 					log.w("IOException while try to read message from server..");
 				}
 			}
-		} catch (ClassNotFoundException e) {
+		} /*catch (ClassNotFoundException e) {
 			if(log != null)
 				log.e("Client.Receiver.run() -> ClassNotFoundException");
 			e.printStackTrace();
-		}
+		}/**/
 		
 	}
 	
