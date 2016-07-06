@@ -58,16 +58,19 @@ public class MainActivity extends Activity {
 			@Override
 			public void showWarn(String text) {
 				showText(text);
+				Log.w("Comm", text);
 			}
 			
 			@Override
 			public void showInfo(String text) {
 				showText(text);
+				Log.i("Comm", text);
 			}
 			
 			@Override
 			public void showError(String text) {
 				showText(text);
+				Log.e("Comm", text);
 			}
 		}; 
 		
@@ -111,14 +114,6 @@ public class MainActivity extends Activity {
 					colorSample.setBackgroundColor(color);
 				}
 				
-				if(comm != null && comm.isConnected()){
-					
-					//comm.sendMessage(new RGBMessage("setColor", Color.red(color), Color.green(color), Color.blue(color)));
-				}
-				/*
-				if(myClient != null && myClient.isConnected()){
-					myClient.sendMessage();
-				}/**/
 			}
 		};
 		for(int i=0; i<seekBars.length; i++){
@@ -129,14 +124,6 @@ public class MainActivity extends Activity {
 		
 		tvColor = (TextView) findViewById(R.id.tv_color);
 	
-		/*
-		int mPaint = 0xFF9933;
-		ColorPickerDialog cp = null; 
-		//cp = new ColorPickerDialog(MainActivity.this, MainActivity.this, mPaint).show();
-		/**/
-		
-		
-		
 		editHost = (EditText) findViewById(R.id.edit_host);
 		editPort = (EditText) findViewById(R.id.edit_port);
 		
@@ -159,14 +146,13 @@ public class MainActivity extends Activity {
 						}
 
 						@Override
-						public void onClientConnected(String host, int port) {
+						public void onClientConnected(final String host, final int port) {
 							new Thread() {
 						        public void run() {
 						        	runOnUiThread(new Runnable() {
 					                    @Override
 					                    public void run() {
-					                    	MainActivity.this.showText("Connected: " + comm.getHost() + " @ " + comm.getPort());
-					                    	MainActivity.this.btnConnect.setText("Disconnect");
+					                    	MainActivity.this.onClientConnected(host, port);
 					                    }
 					                });
 						        }
@@ -175,59 +161,29 @@ public class MainActivity extends Activity {
 
 						@Override
 						protected void handleRecievedMessage(final Msg message) {
+							Thread thread =
 							new Thread() {
 						        public void run() {
 						        	runOnUiThread(new Runnable() {
 					                    @Override
 					                    public void run() {
-					                    	MainActivity.this.showText("Received: " + message.toString());
+					                    	MainActivity.this.handleRecievedMessage(message);
 					                    }
 					                });
 						        }
-						    }.start();
+						    };
+						    thread.start();
 						}
 
 						@Override
 						protected void onDisconnected(String host2, int port2) {
-							// TODO Auto-generated method stub
-							
 						}
 						
 					};
-					
-					/*
-					myClient = new Client(host, port, 1000) {
-						
-						@Override
-						protected void showOutput(String arg0) {
-							showText(arg0);
-						}
-						
-						public void onConnected(String host, int port) {
-							MainActivity.this.onClientConnected(host, port);
-						};
-						
-						public void onDisconnected(String host, int port) {
-							//btnConnect.setText("Connect");
-						};
-						
-						@Override
-						protected void handleRecievedMessage(Msg message) {
-							showText("Received: " + message.toString());
-						}
-					};
-					/**/
 					
 					comm.setLogManager(log);
 					comm.start();
 					
-					/*
-					myClient.setLogManager(log);
-					myClient.start();
-					/**/
-					
-					
-					//btnConnect.setText("Disconnect");
 				}
 			}
 		});
@@ -238,17 +194,22 @@ public class MainActivity extends Activity {
 		btnSendCommand.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				sendCommand();
+				sendCommand(commandLine.getText().toString());
 				commandLine.setText("");
 			}
 		});
 	}
 	
 	
-	public void onClientConnected(String host, int port){
-		btnConnect.setText("Disconnect");
+	protected void handleRecievedMessage(Msg message) {
+		showText("Received: " + message.toString());
 	}
 	
+	protected void onClientConnected(String host, int port){
+		showText("Connected: " + host + " @ " + port);
+    	btnConnect.setText("Disconnect");
+	}
+
 	
 	private void disconnect(){
 		if(comm != null){
@@ -258,6 +219,7 @@ public class MainActivity extends Activity {
 			}catch(Exception doesNotMatterWhenTryToDisconnectBecauseAppClosing){}
 		}
 	}
+	
 	
 	public void showText(final String text){
 		
@@ -279,6 +241,7 @@ public class MainActivity extends Activity {
 	    }.start();
 		
 	}
+	
 	
 	private int getColorFromSeekBars(){
 		int color = Color.rgb(
@@ -314,18 +277,19 @@ public class MainActivity extends Activity {
 							seekBars[GREEN].getProgress(), 
 							seekBars[BLUE].getProgress()
 			);
-			if(comm.sendMessage(m)){
-				showText("Sent: ");
-			}else{
-				showText("NOT sent: ");
-			}
 			showText(m.toString());
+			if(comm.sendMessage(m)){
+				showText("..Sent");
+			}else{
+				showText("..NOT sent");
+			}
+			
 		}
 	}
 	
-	private void sendCommand(){
+	private void sendCommand(String command){
 		if(comm != null){
-			Msg toSend = new Msg(commandLine.getText().toString(), Msg.Types.COMMAND);
+			Msg toSend = new Msg(command, Msg.Types.REQUEST);
 			if( comm.sendMessage(toSend) ){
 				showText("Sent: " + toSend.toString());
 			}else{

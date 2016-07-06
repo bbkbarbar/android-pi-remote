@@ -45,7 +45,7 @@ public abstract class LogManager {
 		if(this.level <= Level.DEBUG)
 			this.showInfo(this.prefix + text);
 	}
-
+	
 	public void i(String text){
 		if(this.level <= Level.INFO)
 			this.showInfo(this.prefix + text);

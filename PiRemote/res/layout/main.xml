@@ -33,7 +33,7 @@
 	    	
 	    	<EditText
 	    		android:id="@+id/edit_port"
-	    		android:text="10713"
+	    		android:text="10714"
 	    		android:singleLine="true"
 	    		android:layout_width="wrap_content"
 	    		android:layout_height="wrap_content"    
@@ -55,7 +55,7 @@
 	    	
 	    	<EditText
 	    		android:id="@+id/edit_host"
-	    		android:text="192.168.0.101"
+	    		android:text="barbarhome.ddns.net"
 	    		android:layout_width="fill_parent"
 	    		android:layout_height="wrap_content" 
 	    		android:singleLine="true"   

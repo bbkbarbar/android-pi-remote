@@ -93,7 +93,7 @@ public abstract class Client extends Thread {
 			objIn = new ObjectInputStream(is);								
 			
 			if(log != null)
-				log.i("Connected to server " + host + " @ " + this.port);
+				log.w("Connected to server " + host + " @ " + this.port);
 			
 		} catch (java.net.ConnectException ce){
 			
