@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
 	private TextView tvColor = null;
 	
 	private Button btnSendCommand = null;
+	private Button btnClear = null;
 	private EditText commandLine = null;
 	
 	private EditText textArea = null;
@@ -196,6 +197,16 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				sendCommand(commandLine.getText().toString());
 				commandLine.setText("");
+			}
+		});
+		
+		btnClear = (Button) findViewById(R.id.btn_clear);
+		btnClear.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(textArea != null){
+					textArea.setText("");
+				}
 			}
 		});
 	}
