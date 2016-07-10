@@ -1,3 +1,4 @@
 # index files
 *.index
 .metadata*
+*.class
