@@ -47,6 +47,7 @@ public final class R {
         public static final int sb_color_blue=0x7f080009;
         public static final int sb_color_green=0x7f080008;
         public static final int sb_color_red=0x7f080007;
+        public static final int show_dialog_for_commands=0x7f080011;
         public static final int text1=0x7f080003;
         public static final int text_area=0x7f08000e;
         public static final int tv_color=0x7f08000a;

@@ -2,6 +2,8 @@ package hu.barbar.piclient;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +45,8 @@ public class MainActivity extends Activity {
 	
 	private LogManager log;
 	private ConfigManager myConfigManager = null;
+	
+	public static AlertDialog alertForDialog = null;
 	
 	//private Client myClient = null;
 	private CommunicationThread comm = null;
@@ -328,8 +332,20 @@ public class MainActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		if (id == R.id.show_dialog_for_commands) {
+			
+			final CharSequence[] items = {"1", "2", "3"};
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Select");
+			builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+			     // Do something with the selection
+			     alertForDialog.dismiss();
+			}
+			});
+			alertForDialog = builder.create();
+			alertForDialog.show();
 		}
 		return super.onOptionsItemSelected(item);
 	}
