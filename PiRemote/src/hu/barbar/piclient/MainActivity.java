@@ -42,6 +42,7 @@ public class MainActivity extends Activity {
 	private EditText textArea = null;
 	
 	private LogManager log;
+	private ConfigManager myConfigManager = null;
 	
 	//private Client myClient = null;
 	private CommunicationThread comm = null;
@@ -51,6 +52,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		myConfigManager = new ConfigManager(MainActivity.this);
 		
 		thisApp = MainActivity.this;
 		
@@ -209,6 +212,10 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
+		
+		editPort.setText(myConfigManager.loadString("port", "10714"));
+		editHost.setText(myConfigManager.loadString("host", "barbarhome.ddns.net"));
+		
 	}
 	
 	
@@ -330,6 +337,10 @@ public class MainActivity extends Activity {
 	
 	@Override
 	protected void onPause() {
+		
+		myConfigManager.storeString("port", editPort.getText().toString());
+		myConfigManager.storeString("host", editHost.getText().toString());
+		
 		disconnect();
 		super.onPause();
 	}
