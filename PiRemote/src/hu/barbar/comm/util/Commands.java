@@ -21,5 +21,7 @@ public class Commands {
 	public static final String ENABLE_TODO_ITEM = "enable_todo_item";
 
 	public static final String DISBALE_TODO_ITEM = "disable_todo_item";
+
+	public static final String SET_IO_OUTPUT = "io";
 	
 }
