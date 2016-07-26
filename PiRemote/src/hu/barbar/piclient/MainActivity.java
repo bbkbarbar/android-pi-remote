@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import hu.barbar.comm.util.Commands;
 import hu.barbar.comm.util.Msg;
 import hu.barbar.comm.util.RGBMessage;
 import hu.barbar.util.LogManager;
@@ -37,6 +38,7 @@ public class MainActivity extends Activity {
 	private LinearLayout colorSample = null;
 	private TextView tvColor = null;
 	
+	private OnClickListener sendBtnOnClickListener = null;
 	private Button btnSendCommand = null;
 	private Button btnClear = null;
 	private EditText commandLine = null;
@@ -199,13 +201,14 @@ public class MainActivity extends Activity {
 		
 		commandLine = (EditText) findViewById(R.id.edit_command_line);
 		btnSendCommand = (Button) findViewById(R.id.btn_send);
-		btnSendCommand.setOnClickListener(new OnClickListener() {
+		sendBtnOnClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				sendCommand(commandLine.getText().toString());
 				commandLine.setText("");
 			}
-		});
+		};
+		btnSendCommand.setOnClickListener(sendBtnOnClickListener);
 		
 		btnClear = (Button) findViewById(R.id.btn_clear);
 		btnClear.setOnClickListener(new OnClickListener() {
@@ -334,14 +337,50 @@ public class MainActivity extends Activity {
 		int id = item.getItemId();
 		if (id == R.id.show_dialog_for_commands) {
 			
-			final CharSequence[] items = {"1", "2", "3"};
+			final CharSequence[] items = {
+									"Read temp",
+									"Enable todo item", 
+									"Disable todo item", 
+									"Client count",
+									"Send workerinfo mail",
+									"stop server"
+			};
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("Select");
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
-			     // Do something with the selection
-			     alertForDialog.dismiss();
+				//Do something with the selection
+				
+				switch (item) {
+				case 0:
+					commandLine.setText(Commands.GET_TEMP);
+					sendBtnOnClickListener.onClick(null);
+					break;
+				case 1:
+					commandLine.setText(Commands.ENABLE_TODO_ITEM);
+					break;
+				case 2:
+					commandLine.setText(Commands.DISBALE_TODO_ITEM);
+					break;
+				case 3:
+					commandLine.setText(Commands.GET_CLIENT_COUNT);
+					sendBtnOnClickListener.onClick(null);
+					break;
+				case 4:
+					commandLine.setText(Commands.EMAIL_WORKER_INFO + " bbk.barbar@gmail.com");
+					sendBtnOnClickListener.onClick(null);
+					break;
+				case 5:
+					commandLine.setText(Commands.STOP_SERVER);
+					sendBtnOnClickListener.onClick(null);
+					break;
+
+				default:
+					break;
+				}
+				
+				alertForDialog.dismiss();
 			}
 			});
 			alertForDialog = builder.create();
