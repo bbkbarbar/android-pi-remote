@@ -19,6 +19,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import hu.barbar.comm.util.Commands;
 import hu.barbar.comm.util.Msg;
+import hu.barbar.comm.util.PWMMessage;
 import hu.barbar.comm.util.RGBMessage;
 import hu.barbar.util.LogManager;
 
@@ -37,6 +38,11 @@ public class MainActivity extends Activity {
 							 BLUE = 2;
 	private LinearLayout colorSample = null;
 	private TextView tvColor = null;
+	
+	
+	private SeekBar pwmOutput = null;
+	private TextView tvPWMOutput = null;
+	
 	
 	private OnClickListener sendBtnOnClickListener = null;
 	private Button btnSendCommand = null;
@@ -131,6 +137,28 @@ public class MainActivity extends Activity {
 			seekBars[i].setProgress(255);
 			seekBars[i].setOnSeekBarChangeListener(osbcl);
 		}
+		
+		tvPWMOutput = (TextView) findViewById(R.id.tv_pwm_output);
+		
+		pwmOutput = (SeekBar) findViewById(R.id.sb_pwm);
+		pwmOutput.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				
+				tvPWMOutput.setText("" + progress + "%");
+				//TODO
+				PWMMessage pwmMessage = new PWMMessage(3, Float.valueOf(progress));
+				comm.sendMessage(pwmMessage);
+				
+			}
+		});
+		
 		
 		tvColor = (TextView) findViewById(R.id.tv_color);
 	

@@ -114,6 +114,24 @@
     			android:layout_height="wrap_content"
     			android:text="FFFFFF"
     	    />
+    	    
+
+    	    <!-- Other PWM outputs -->
+    	    <SeekBar 
+    	    	android:id="@+id/sb_pwm"
+    	    	android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:max="100"
+    			android:progress="50"
+    			android:paddingLeft="20dip"
+    			android:paddingRight="20dip"
+    	    />
+    	    <TextView 
+    	    	android:id="@+id/tv_pwm_output"
+    	    	android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:text="50%"
+    	    />
     	
     	</LinearLayout>
     	
