@@ -30,6 +30,8 @@ public class Msg implements Serializable{
 				return "RGB command";
 			case Types.REQUEST:
 				return "Request";
+			case Types.PWM_COMMAND:
+				return "Pwm command";
 
 			default:
 				return "Undefined";

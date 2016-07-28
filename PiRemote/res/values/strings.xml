@@ -10,4 +10,21 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
+    <string name="pwm_channel_select_prompt">Choose a channel</string>
+    <string-array name="channels">
+        <item>ch3</item>
+		<item>ch4</item>
+		<item>ch5</item>
+		<item>ch6</item>
+		<item>ch7</item>
+		<item>ch8</item>
+		<item>ch9</item>
+		<item>ch10</item>
+		<item>ch11</item>
+		<item>ch12</item>
+		<item>ch13</item>
+		<item>ch14</item>
+		<item>ch15</item>
+    </string-array>
+    
 </resources>

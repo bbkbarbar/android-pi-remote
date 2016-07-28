@@ -33,7 +33,6 @@ public class RGBMessage extends Msg {
 	}
 	
 	public static RGBMessage createInstance(String line){
-		int resolvedType = Msg.Types.RGB_COMMAND;
 		int resolvedR = 0;
 		int resolvedG = 0;
 		int resolvedB = 0;

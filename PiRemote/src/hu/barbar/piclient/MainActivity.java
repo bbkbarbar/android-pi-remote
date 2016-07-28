@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import hu.barbar.comm.util.Commands;
 import hu.barbar.comm.util.Msg;
@@ -42,7 +43,8 @@ public class MainActivity extends Activity {
 	
 	private SeekBar pwmOutput = null;
 	private TextView tvPWMOutput = null;
-	
+	private Spinner pwmChannelSpinner = null;
+	private Button btnSetPWMOutput = null;
 	
 	private OnClickListener sendBtnOnClickListener = null;
 	private Button btnSendCommand = null;
@@ -139,7 +141,6 @@ public class MainActivity extends Activity {
 		}
 		
 		tvPWMOutput = (TextView) findViewById(R.id.tv_pwm_output);
-		
 		pwmOutput = (SeekBar) findViewById(R.id.sb_pwm);
 		pwmOutput.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
@@ -150,15 +151,36 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				
 				tvPWMOutput.setText("" + progress + "%");
-				//TODO
-				PWMMessage pwmMessage = new PWMMessage(3, Float.valueOf(progress));
-				comm.sendMessage(pwmMessage);
-				
 			}
 		});
 		
+		pwmChannelSpinner = (Spinner) findViewById(R.id.pwm_channel_spinner);
+		btnSetPWMOutput = (Button) findViewById(R.id.btn_set_pwm);
+		btnSetPWMOutput.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//TODO
+				int ch = pwmChannelSpinner.getSelectedItemPosition();
+				if (ch >= 0){
+					ch += 3;
+					PWMMessage pwmMessage = new PWMMessage(ch, Float.valueOf( pwmOutput.getProgress() ));
+					if(comm != null && comm.isConnected()){
+						comm.sendMessage(pwmMessage);
+						textArea.setText(
+								textArea.getText() + "Sent: "
+								+ pwmMessage.toString()
+						);
+					}else{
+						textArea.setText(
+								textArea.getText() + "Not connected;\nCan not send: "
+								+ pwmMessage.toString()
+						);
+					}
+					
+				}
+			}
+		});
 		
 		tvColor = (TextView) findViewById(R.id.tv_color);
 	
