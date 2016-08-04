@@ -18,7 +18,8 @@ public class Msg implements Serializable{
 								PLAIN_TEXT = 2, 
 								RGB_COMMAND = 3,
 								REQUEST = 4,
-								PWM_COMMAND = 5;
+								PWM_COMMAND = 5,
+								PWM_OUTPUT_STATES = 6;
 		
 		public static String getTypeText(int type){
 			switch (type) {
@@ -32,6 +33,8 @@ public class Msg implements Serializable{
 				return "Request";
 			case Types.PWM_COMMAND:
 				return "Pwm command";
+			case Types.PWM_OUTPUT_STATES:
+				return "Pwm output states";
 
 			default:
 				return "Undefined";

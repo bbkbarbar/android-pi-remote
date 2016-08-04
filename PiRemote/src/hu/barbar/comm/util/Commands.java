@@ -23,5 +23,9 @@ public class Commands {
 	public static final String DISBALE_TODO_ITEM = "disable_todo_item";
 
 	public static final String SET_IO_OUTPUT = "io";
+
+	public static final String SET_PWM_OUTPUT = "pwm";
+	
+	public static final String GET_PWM_OUTPUT_VALUES = "get_pwm_output_values";
 	
 }
