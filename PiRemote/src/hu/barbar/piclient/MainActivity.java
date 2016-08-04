@@ -169,12 +169,12 @@ public class MainActivity extends Activity {
 						comm.sendMessage(pwmMessage);
 						textArea.setText(
 								textArea.getText() + "Sent: "
-								+ pwmMessage.toString()
+								+ pwmMessage.toString() + "\n"
 						);
 					}else{
 						textArea.setText(
 								textArea.getText() + "Not connected;\nCan not send: "
-								+ pwmMessage.toString()
+								+ pwmMessage.toString() + "\n"
 						);
 					}
 					
