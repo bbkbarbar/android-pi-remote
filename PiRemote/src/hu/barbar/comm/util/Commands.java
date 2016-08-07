@@ -27,5 +27,9 @@ public class Commands {
 	public static final String SET_PWM_OUTPUT = "pwm";
 	
 	public static final String GET_PWM_OUTPUT_VALUES = "get_pwm_output_values";
+
+	public static final String GET_WORKER_INFO = "get worker info";
+
+	public static final String GET_CPU_TEMP = "get cpu temp";
 	
 }

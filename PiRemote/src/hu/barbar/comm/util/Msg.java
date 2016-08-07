@@ -19,7 +19,9 @@ public class Msg implements Serializable{
 								RGB_COMMAND = 3,
 								REQUEST = 4,
 								PWM_COMMAND = 5,
-								PWM_OUTPUT_STATES = 6;
+								PWM_OUTPUT_STATES = 6,
+								RESPONSE_WORKER_INFO = 7,
+								RESPONSE_CPU_TEMP = 8;
 		
 		public static String getTypeText(int type){
 			switch (type) {
@@ -35,7 +37,11 @@ public class Msg implements Serializable{
 				return "Pwm command";
 			case Types.PWM_OUTPUT_STATES:
 				return "Pwm output states";
-
+			case Types.RESPONSE_WORKER_INFO:
+				return "Response - worker info";
+			case Types.RESPONSE_CPU_TEMP:
+				return "Response - Cpu temperature";
+				
 			default:
 				return "Undefined";
 			}
