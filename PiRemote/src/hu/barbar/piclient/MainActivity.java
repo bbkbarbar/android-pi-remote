@@ -393,7 +393,8 @@ public class MainActivity extends Activity {
 									"Disable todo item", 
 									"Client count",
 									"Send workerinfo mail",
-									"stop server"
+									"stop server",
+									"get worker info"
 			};
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -404,8 +405,9 @@ public class MainActivity extends Activity {
 				
 				switch (item) {
 				case 0:
-					commandLine.setText(Commands.GET_TEMP);
-					sendBtnOnClickListener.onClick(null);
+					/*commandLine.setText(Commands.GET_TEMP);
+					sendBtnOnClickListener.onClick(null);/**/
+					comm.sendMessage(new Msg(Commands.GET_TEMP, Msg.Types.REQUEST));
 					break;
 				case 1:
 					commandLine.setText(Commands.ENABLE_TODO_ITEM);
@@ -423,6 +425,10 @@ public class MainActivity extends Activity {
 					break;
 				case 5:
 					commandLine.setText(Commands.STOP_SERVER);
+					sendBtnOnClickListener.onClick(null);
+					break;
+				case 6:
+					commandLine.setText(Commands.GET_WORKER_INFO);
 					sendBtnOnClickListener.onClick(null);
 					break;
 
