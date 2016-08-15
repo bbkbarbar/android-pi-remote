@@ -18,10 +18,10 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
-import hu.barbar.comm.util.Commands;
 import hu.barbar.comm.util.Msg;
-import hu.barbar.comm.util.PWMMessage;
-import hu.barbar.comm.util.RGBMessage;
+import hu.barbar.comm.util.tasker_comm.Commands;
+import hu.barbar.comm.util.tasker_comm.PWMMessage;
+import hu.barbar.comm.util.tasker_comm.RGBMessage;
 import hu.barbar.util.LogManager;
 
 public class MainActivity extends Activity {
@@ -241,7 +241,6 @@ public class MainActivity extends Activity {
 						
 					};
 					
-					comm.setLogManager(log);
 					comm.start();
 					
 				}

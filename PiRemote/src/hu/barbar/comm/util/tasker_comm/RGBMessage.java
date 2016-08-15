@@ -1,4 +1,6 @@
-package hu.barbar.comm.util;
+package hu.barbar.comm.util.tasker_comm;
+
+import hu.barbar.comm.util.Msg;
 
 /**
  * 

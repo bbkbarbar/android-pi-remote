@@ -102,11 +102,6 @@ public abstract class CommunicationThread extends Thread {
 	}
 
 
-	public synchronized void setLogManager(LogManager log) {
-		if(myClient != null)
-			myClient.setLogManager(log);
-	}
-
 	public String getHost() {
 		return this.host;
 	}

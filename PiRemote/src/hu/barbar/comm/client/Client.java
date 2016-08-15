@@ -6,9 +6,9 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import hu.barbar.comm.util.Commands;
+import android.util.Log;
+import hu.barbar.comm.util.BaseCommands;
 import hu.barbar.comm.util.Msg;
-import hu.barbar.util.LogManager;
 
 public abstract class Client extends Thread {
 
@@ -19,8 +19,6 @@ public abstract class Client extends Thread {
 	protected int TIMEOUT_WAIT_WHILE_INITIALIZED_IN_MS = 3000;
 	private static final int DELAY_BETWEEN_CHECKS_FOR_INITIALIZED_STATE_IN_MS = 50;
 	
-	private LogManager log = null;
-			
 	//private Client me;
 	protected SenderThread sender = null;
     protected ReceiverThread receiver = null;
@@ -59,9 +57,8 @@ public abstract class Client extends Thread {
 		this.TIMEOUT_WAIT_WHILE_INITIALIZED_IN_MS = timeOutForIsOK;
 	}
 	
-	public void setLogManager(LogManager l){
-		this.log = l;
-	}
+	public void setLogLevels(String path, int levelOfStandardOutput, int levelOfFileLogs){
+	}/**/
 	
 	@Override
 	public void run() {
@@ -92,8 +89,7 @@ public abstract class Client extends Thread {
 			objOut = new ObjectOutputStream(os);
 			objIn = new ObjectInputStream(is);								
 			
-			if(log != null)
-				log.w("Connected to server " + host + " @ " + this.port);
+			Log.w("","Connected to server " + host + " @ " + this.port);
 			
 		} catch (java.net.ConnectException ce){
 			
@@ -101,8 +97,7 @@ public abstract class Client extends Thread {
 			return;
 			/**/
         } catch (Exception ioe) {
-        	if(log != null)
-				log.w("Can not establish connection to " +  host + " @ " + port);
+				Log.w("", "Can not establish connection to " +  host + " @ " + port);
         	ioe.printStackTrace();
         	//System.exit(-1);
         	return;
@@ -111,7 +106,7 @@ public abstract class Client extends Thread {
         /**
 		 *  Create and start Receiver thread
 		 */
-		this.receiver = new ReceiverThread(objIn, Client.this, log) {
+		this.receiver = new ReceiverThread(objIn, Client.this) {
 			@Override
 			protected void handleMessage(Msg message) {
 				handleRecievedMessage(message);
@@ -123,9 +118,8 @@ public abstract class Client extends Thread {
 		/**
 		 *  Create and start Sender thread
 		 */
-		sender = new SenderThread(objOut, log);
-		if(log != null)
-			log.d("Sender created.");
+		sender = new SenderThread(objOut);
+		Log.d("","Sender created.");
 
         //sender.setDaemon(true);
         sender.start();
@@ -233,7 +227,7 @@ public abstract class Client extends Thread {
 	public void disconnect() {
 		
 		this.wantToDisconnect = true;
-		Msg byeMsg = new Msg(Commands.CLIENT_EXIT, Msg.Types.COMMAND);
+		Msg byeMsg = new Msg(BaseCommands.CLIENT_EXIT, Msg.Types.COMMAND);
 		this.sendMessage(byeMsg);
 		
 		try {

@@ -1,19 +1,13 @@
-package hu.barbar.comm.util;
+package hu.barbar.comm.util.tasker_comm;
 
-public class Commands {
-	
+import hu.barbar.comm.util.BaseCommands;
+
+public class Commands extends BaseCommands {
+
 	public static final String GET_DATE = "dateTime";
 
 	public static final String GET_TEMP = "readTemp";
 	
-	public static final String GET_CLIENT_COUNT = "client_count";
-
-	public static final String GET_CLIENT_LIST = "client_list";
-	
-	public static final String STOP_SERVER = "stop_server";
-
-	public static final String CLIENT_EXIT = "client_exit";
-
 	public static final String SEND_INFO_MAIL = "sendinfomail";
 
 	public static final String EMAIL_WORKER_INFO = "sendworkerinfomail";
@@ -31,5 +25,5 @@ public class Commands {
 	public static final String GET_WORKER_INFO = "get worker info";
 
 	public static final String GET_CPU_TEMP = "get cpu temp";
-	
+
 }
