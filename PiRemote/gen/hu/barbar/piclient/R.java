@@ -37,28 +37,29 @@ public final class R {
         public static final int tasker_icon2_hdpi=0x7f020003;
     }
     public static final class id {
-        public static final int action_example=0x7f090014;
-        public static final int action_settings=0x7f090013;
-        public static final int btn_clear=0x7f09000f;
-        public static final int btn_connect=0x7f090000;
-        public static final int btn_select_color=0x7f090005;
-        public static final int btn_send=0x7f090010;
-        public static final int btn_set_pwm=0x7f090006;
-        public static final int color_sample=0x7f090008;
-        public static final int edit_command_line=0x7f090011;
-        public static final int edit_host=0x7f090004;
-        public static final int edit_port=0x7f090002;
-        public static final int port_container=0x7f090001;
-        public static final int pwm_channel_spinner=0x7f090007;
-        public static final int sb_color_blue=0x7f09000b;
-        public static final int sb_color_green=0x7f09000a;
-        public static final int sb_color_red=0x7f090009;
-        public static final int sb_pwm=0x7f09000d;
-        public static final int show_dialog_for_commands=0x7f090015;
-        public static final int text1=0x7f090003;
-        public static final int text_area=0x7f090012;
-        public static final int tv_color=0x7f09000c;
-        public static final int tv_pwm_output=0x7f09000e;
+        public static final int action_example=0x7f090015;
+        public static final int action_settings=0x7f090014;
+        public static final int base_relative_layout=0x7f090000;
+        public static final int btn_clear=0x7f090010;
+        public static final int btn_connect=0x7f090001;
+        public static final int btn_select_color=0x7f090006;
+        public static final int btn_send=0x7f090011;
+        public static final int btn_set_pwm=0x7f090007;
+        public static final int color_sample=0x7f090009;
+        public static final int edit_command_line=0x7f090012;
+        public static final int edit_host=0x7f090005;
+        public static final int edit_port=0x7f090003;
+        public static final int port_container=0x7f090002;
+        public static final int pwm_channel_spinner=0x7f090008;
+        public static final int sb_color_blue=0x7f09000c;
+        public static final int sb_color_green=0x7f09000b;
+        public static final int sb_color_red=0x7f09000a;
+        public static final int sb_pwm=0x7f09000e;
+        public static final int show_dialog_for_commands=0x7f090016;
+        public static final int text1=0x7f090004;
+        public static final int text_area=0x7f090013;
+        public static final int tv_color=0x7f09000d;
+        public static final int tv_pwm_output=0x7f09000f;
     }
     public static final class layout {
         public static final int main=0x7f030000;

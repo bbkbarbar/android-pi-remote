@@ -1,27 +1,23 @@
 package hu.barbar.piclient;
 
 
+import android.R;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
-import hu.barbar.comm.util.Commands;
 import hu.barbar.comm.util.Msg;
-import hu.barbar.comm.util.PWMMessage;
-import hu.barbar.comm.util.RGBMessage;
+import hu.barbar.comm.util.tasker.RGBMessage;
 import hu.barbar.util.LogManager;
 
 public class MainActivity extends Activity {
@@ -65,7 +61,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		//TODO:
+		//setContentView(R.layout.main);
+		
 		
 		myConfigManager = new ConfigManager(MainActivity.this);
 		
@@ -98,6 +96,8 @@ public class MainActivity extends Activity {
 	
 	private void initUI(){
 		
+		//TODO
+		/*
 		textArea = (EditText) findViewById(R.id.text_area); 
 		
 		btnSelectColor = (Button) findViewById(R.id.btn_select_color);
@@ -269,7 +269,7 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-		
+		/**/
 		editPort.setText(myConfigManager.loadString("port", "10714"));
 		editHost.setText(myConfigManager.loadString("host", "barbarhome.ddns.net"));
 		
@@ -375,7 +375,8 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		//TODO
+		//getMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -384,6 +385,8 @@ public class MainActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
+		//TODO
+		/*
 		int id = item.getItemId();
 		if (id == R.id.show_dialog_for_commands) {
 			
@@ -405,9 +408,6 @@ public class MainActivity extends Activity {
 				
 				switch (item) {
 				case 0:
-					/*commandLine.setText(Commands.GET_TEMP);
-					sendBtnOnClickListener.onClick(null);/**/
-					comm.sendMessage(new Msg(Commands.GET_TEMP, Msg.Types.REQUEST));
 					break;
 				case 1:
 					commandLine.setText(Commands.ENABLE_TODO_ITEM);
@@ -442,6 +442,7 @@ public class MainActivity extends Activity {
 			alertForDialog = builder.create();
 			alertForDialog.show();
 		}
+		/**/
 		return super.onOptionsItemSelected(item);
 	}
 
