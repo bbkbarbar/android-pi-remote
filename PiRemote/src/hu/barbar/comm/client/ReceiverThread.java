@@ -3,7 +3,6 @@ package hu.barbar.comm.client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import android.util.Log;
 import hu.barbar.comm.util.Msg;
 
 public abstract class ReceiverThread extends Thread {
@@ -33,10 +32,8 @@ public abstract class ReceiverThread extends Thread {
 			
 		} catch (IOException e) {
 			if(myParent.getWantToDisconnect() == false){
-				Log.w("", "IOException while try to read message from server..");
 			}
 		} catch (ClassNotFoundException e) {
-			Log.e("", "Client.Receiver.run() -> ClassNotFoundException");
 			e.printStackTrace();
 		}
 		

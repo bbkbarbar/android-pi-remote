@@ -3,7 +3,6 @@ package hu.barbar.comm.client;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import android.util.Log;
 import hu.barbar.comm.util.Msg;
 
 public class SenderThread extends Thread {
@@ -22,7 +21,6 @@ public class SenderThread extends Thread {
 			return;
 			
 		} catch (IOException e) {
-			Log.e("", "Client.SenderThread.sendMsg() -> IOException catched.");
 			e.printStackTrace();
 		}
 		

@@ -6,14 +6,13 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import android.util.Log;
 import hu.barbar.comm.util.BaseCommands;
 import hu.barbar.comm.util.Msg;
 
 public abstract class Client extends Thread {
 
-	public static final int versionCode = 201;
-	public static final String version = "2.0.1";
+	public static final int versionCode = 200;
+	public static final String version = "2.0.0";
 	
 	
 	protected int TIMEOUT_WAIT_WHILE_INITIALIZED_IN_MS = 3000;
@@ -58,7 +57,6 @@ public abstract class Client extends Thread {
 	}
 	
 	public void setLogLevels(String path, int levelOfStandardOutput, int levelOfFileLogs){
-		//Log.init(path, levelOfStandardOutput, levelOfFileLogs);
 	}/**/
 	
 	@Override
@@ -90,15 +88,12 @@ public abstract class Client extends Thread {
 			objOut = new ObjectOutputStream(os);
 			objIn = new ObjectInputStream(is);								
 			
-			Log.w("", "Connected to server " + host + " @ " + this.port);
-			
 		} catch (java.net.ConnectException ce){
 			
 			this.onConnectionRefused(host, port);
 			return;
 			/**/
         } catch (Exception ioe) {
-				Log.w("", "Can not establish connection to " +  host + " @ " + port);
         	ioe.printStackTrace();
         	//System.exit(-1);
         	return;
@@ -120,7 +115,6 @@ public abstract class Client extends Thread {
 		 *  Create and start Sender thread
 		 */
 		sender = new SenderThread(objOut);
-		Log.d("", "Sender created.");
 
         //sender.setDaemon(true);
         sender.start();
