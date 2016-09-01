@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+>
+	
+    <RelativeLayout 
+    	android:layout_height="wrap_content"
+    	android:layout_width="fill_parent" 
+    >
+    	<Button
+    		android:id="@+id/btn_connect"
+    		android:text="Connect"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_gravity="center_vertical"
+    		android:layout_alignParentRight="true"  
+    	/>
+    	<LinearLayout
+    	    android:id="@+id/port_container"
+		    android:layout_toLeftOf="@+id/btn_connect"
+		    android:orientation="vertical"
+		    android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+		>
+	    	<TextView 
+	    		android:text="Port:"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"    
+	    	/>
+	    	
+	    	<EditText
+	    		android:id="@+id/edit_port"
+	    		android:text="10714"
+	    		android:singleLine="true"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"    
+	    	/>
+    	</LinearLayout>
+		<LinearLayout
+		    android:layout_alignParentLeft="true"
+		    android:layout_toLeftOf="@+id/port_container"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+		>
+	    	<TextView 
+	    		android:id="@+id/text1"
+	    		android:text="Host:"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"    
+	    	/>
+	    	
+	    	<EditText
+	    		android:id="@+id/edit_host"
+	    		android:text="barbarhome.ddns.net"
+	    		android:layout_width="fill_parent"
+	    		android:layout_height="wrap_content" 
+	    		android:singleLine="true"   
+	    	/>
+	    </LinearLayout>
+	
+   	</RelativeLayout>
+		
+    	<RelativeLayout 
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    	>
+	    	<Button
+	    		android:id="@+id/btn_select_color"
+	    		android:text="Select color"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	    		android:layout_gravity="center_vertical"
+	    		android:layout_alignParentLeft="true"  
+	    	/>
+	    	
+	    	<Button
+	    		android:id="@+id/btn_set_pwm"
+	    		android:text="Set pwm output"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	    		android:layout_gravity="center_vertical"
+	    		android:layout_alignParentRight="true"  
+	    	/>
+	    	
+	    	<Spinner
+    			android:id="@+id/pwm_channel_spinner"
+		    	android:layout_width="fill_parent"
+		    	android:layout_toLeftOf="@id/btn_set_pwm"
+		    	android:layout_toRightOf="@id/btn_select_color"
+		    	android:layout_height="wrap_content"
+		    	android:entries="@array/channels"
+		    	android:prompt="@string/pwm_channel_select_prompt" 
+		   	/>
+	    	
+    	</RelativeLayout>
+    	
+    	<LinearLayout
+    	    android:id="@+id/color_sample"
+    	    android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:orientation="vertical"
+    	>
+	    	
+    	    <SeekBar 
+    	    	android:id="@+id/sb_color_red"
+    	    	android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:paddingLeft="20dip"
+    			android:paddingRight="20dip"
+    	    />
+    	    <SeekBar 
+    	    	android:id="@+id/sb_color_green"
+    	    	android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:paddingLeft="20dip"
+    			android:paddingRight="20dip"
+    	    />
+    	    <SeekBar 
+    	    	android:id="@+id/sb_color_blue"
+    	    	android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:paddingLeft="20dip"
+    			android:paddingRight="20dip"
+    	    />
+    	    
+    	    <TextView 
+    	    	android:id="@+id/tv_color"
+    	    	android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:text="FFFFFF"
+    	    />
+    	    
+
+    	    <!-- Other PWM outputs -->
+    	    <SeekBar 
+    	    	android:id="@+id/sb_pwm"
+    	    	android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:max="100"
+    			android:progress="50"
+    			android:paddingLeft="20dip"
+    			android:paddingRight="20dip"
+    	    />
+    	    <TextView 
+    	    	android:id="@+id/tv_pwm_output"
+    	    	android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:text="50%"
+    	    />
+    	
+    	</LinearLayout>
+    	
+    	<RelativeLayout 
+	    	android:layout_height="wrap_content"
+	    	android:layout_width="fill_parent" 
+	    >
+    	    
+    	    <Button 
+    	    	android:id="@+id/btn_clear"
+    	    	android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentRight="true"
+    			android:text="C"
+    			android:padding="1dip"
+    	    />
+    	    <Button 
+    	    	android:id="@+id/btn_send"
+    	    	android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_toLeftOf="@id/btn_clear"
+    			android:text="Send"
+    	    />
+    	    <EditText 
+    	    	android:id="@+id/edit_command_line"
+    	    	android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:layout_toLeftOf="@id/btn_send"
+    			android:layout_alignParentLeft="true"
+    	    />
+    		
+    	</RelativeLayout>
+    	
+    	<EditText 
+    		android:id="@+id/text_area"
+    		android:text=""
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent"
+    	/>
+
+</LinearLayout>
