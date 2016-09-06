@@ -18,10 +18,12 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import hu.barbar.comm.util.Msg;
 import hu.barbar.comm.util.tasker.Commands;
 import hu.barbar.comm.util.tasker.PWMMessage;
 import hu.barbar.comm.util.tasker.RGBMessage;
+import hu.barbar.comm.util.tasker.StateMsg;
 import hu.barbar.util.LogManager;
 
 public class MainActivity extends Activity {
@@ -277,6 +279,10 @@ public class MainActivity extends Activity {
 	
 	protected void handleRecievedMessage(Msg message) {
 		showText("Received: " + message.toString());
+		if(message.getType() == Msg.Types.RESPONSE_STATE){
+			StateMsg sm = (StateMsg) message;
+			Toast.makeText(getApplication(), "State response:\n" + sm.toString(), 1).show();
+		}
 	}
 	
 	protected void onClientConnected(String host, int port){
