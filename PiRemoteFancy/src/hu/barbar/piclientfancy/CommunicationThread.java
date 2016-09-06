@@ -1,4 +1,4 @@
-package hu.barbar.piclient;
+package hu.barbar.piclientfancy;
 
 import android.util.Log;
 import android.widget.Toast;
