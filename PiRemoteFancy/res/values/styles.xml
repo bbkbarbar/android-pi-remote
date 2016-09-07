@@ -16,5 +16,24 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="TableItem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="TableItemRow1" parent="TableItem">
+        <item name="android:padding">15dip</item>
+        <item name="android:textSize">20dip</item>
+    </style>
+    
+    <style name="TableItemRow2" parent="TableItem">
+        <item name="android:layout_weight">1</item>
+    </style>
+    
+    <style name="TableItemCaptionRow" parent="TableItem">
+        <item name="android:padding">5dip</item>
+        <item name="android:layout_weight">1</item>
+    </style>
 
 </resources>

@@ -9,7 +9,16 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
-
+    
+    <string name="btn_t_text_air">Levegő</string>
+    <string name="btn_t_text_heater">Fűtés</string>
+    <string name="btn_t_text_filter">Szűrő</string>
+    <string name="btn_t_text_light">Világítás</string>
+    
+    
+	<string name="error_message_function_of_connect_and_refresh_button">todo: error message</string>
+    
+	
     <string name="pwm_channel_select_prompt">Choose a channel</string>
     <string-array name="channels">
         <item>ch3</item>

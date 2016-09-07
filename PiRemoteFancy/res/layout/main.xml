@@ -10,6 +10,96 @@
     	android:layout_height="wrap_content"
     	android:layout_width="fill_parent" 
     >
+	
+        <ImageButton
+			android:id="@+id/btn_connect_and_refresh"
+			style="@style/TableItem"
+			android:layout_alignParentRight="true"
+			android:src="@drawable/connect_s"
+			android:text=" "
+		/>
+        
+        <TableLayout
+		    android:id="@+id/tableLayout1"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" 
+		    android:layout_alignParentLeft="true"
+		    android:stretchColumns="4"
+		>
+			<TableRow
+			    android:id="@+id/tableRow1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" 
+			>
+			    <TextView
+		            android:id="@+id/tv_temp_air"
+		            style="@style/TableItemRow1"
+		            android:text="26.0°C"
+		        />
+			    <TextView
+		            android:id="@+id/tv_humidity"
+		            style="@style/TableItemRow1"
+		            android:text="54.0%"
+		        />
+			    <TextView
+		            android:id="@+id/tv_temp_water"
+		            style="@style/TableItemRow1"
+		            android:text="25.51°C"
+		        />
+			</TableRow>
+		</TableLayout>
+        
+	</RelativeLayout>
+	
+    <TableLayout
+		android:id="@+id/tableLayout2"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:stretchColumns="4"
+	>
+        <TableRow
+			android:id="@+id/tableRow2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="5dip" 
+		>
+	        <ToggleButton
+				android:id="@+id/btnt_air_pump"
+				style="@style/TableItemRow2"
+				android:textOn="@string/btn_t_text_air"
+				android:textOff="@string/btn_t_text_air"
+				android:checked="false"
+			/>
+	        <ToggleButton
+				android:id="@+id/btnt_filter"
+				style="@style/TableItemRow2"
+				android:textOn="@string/btn_t_text_filter"
+				android:textOff="@string/btn_t_text_filter"
+				android:checked="false"
+				android:enabled="false"
+			/>
+	        <ToggleButton
+				android:id="@+id/btnt_heater"
+				style="@style/TableItemRow2"
+				android:textOn="@string/btn_t_text_heater"
+				android:textOff="@string/btn_t_text_heater"
+				android:checked="false"
+			/>
+	        <ToggleButton
+				android:id="@+id/btnt_light"
+				style="@style/TableItemRow2"
+				android:textOn="@string/btn_t_text_light"
+				android:textOff="@string/btn_t_text_light"
+				android:checked="false"
+			/>
+        </TableRow>
+	</TableLayout>
+    
+    <RelativeLayout 
+    	android:layout_height="wrap_content"
+    	android:layout_width="fill_parent" 
+    >
     	<Button
     		android:id="@+id/btn_connect"
     		android:text="Connect"

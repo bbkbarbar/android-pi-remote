@@ -32,7 +32,17 @@ public class ConfigManager {
 		editor.commit();
 		
 	}
+
+	public boolean loadBoolean(String key, boolean defaultValue) {
+		SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
+		return sharedPref.getBoolean(key, defaultValue);
+	}
 	
-	
+	public void storeBoolean(String key, boolean value) {
+		SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putBoolean(key, value);
+		editor.commit();
+	}
 	
 }
