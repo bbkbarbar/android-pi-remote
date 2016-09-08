@@ -38,10 +38,22 @@ public class ConfigManager {
 		return sharedPref.getBoolean(key, defaultValue);
 	}
 	
+	public int loadInt(String key, int defaultValue) {
+		SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
+		return sharedPref.getInt(key, defaultValue);
+	}
+	
 	public void storeBoolean(String key, boolean value) {
 		SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPref.edit();
 		editor.putBoolean(key, value);
+		editor.commit();
+	}
+
+	public void storeInt(String key, int value) {
+		SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putInt(key, value);
 		editor.commit();
 	}
 	

@@ -48,6 +48,7 @@ public class MainActivity extends Activity {
 	ImageButton btnConnectAndRefresh = null;
 	private static final int FUNCTION_CONNECT = 0;
 	private static final int FUNCTION_REFRESH = 1;
+
 	private int funcitonOfConnectButton = FUNCTION_CONNECT;
 	
 	/*
@@ -68,11 +69,12 @@ public class MainActivity extends Activity {
 	/*
 	 *  Set color
 	 */
+	private static final int DEFAULT_COLOR = 0xFFFFFF;	
 	private LinearLayout colorSample = null;
 	private SeekBar[] seekBars = null;
 	private ImageButton btnSetColor = null;
-	
-	private int selectedColor = 0xFFFFFF;
+
+	private int selectedColor = DEFAULT_COLOR;
 	
 	
 	@Override
@@ -109,6 +111,12 @@ public class MainActivity extends Activity {
 		if(instantConnectEnabled){
 			getConnectionParametersAndConnect();
 		}
+		
+		/*
+		 *  Load last setted color
+		 */
+		this.selectedColor = myConfigManager.loadInt("lastColor", DEFAULT_COLOR);
+		showColorFromSeekBars(this.selectedColor);
 		
 	}
 	
@@ -511,6 +519,12 @@ public class MainActivity extends Activity {
 		);
 	}
 	
+	private void showColorFromSeekBars(int color){
+		seekBars[RED].setProgress(Color.red(color)); 
+		seekBars[GREEN].setProgress(Color.green(color)); 
+		seekBars[BLUE].setProgress(Color.blue(color));
+	}
+	
 	
 	private String getColorHex(int c){
 		String res = ""; 
@@ -564,18 +578,13 @@ public class MainActivity extends Activity {
 
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	
-	@Override
 	protected void onPause() {
 		
 		myConfigManager.storeString("port", comm.getPort() + "");
 		myConfigManager.storeString("host", comm.getHost());
 		myConfigManager.storeBoolean("instant_connect", instantConnectEnabled);
+		
+		myConfigManager.storeInt("lastColor", selectedColor);
 		
 		disconnect();
 		super.onPause();

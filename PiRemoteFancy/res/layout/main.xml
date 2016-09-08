@@ -14,6 +14,7 @@
         <ImageButton
 			android:id="@+id/btn_connect_and_refresh"
 			style="@style/TableItem"
+			android:layout_height="80dip"
 			android:layout_alignParentRight="true"
 			android:src="@drawable/connect_s"
 			android:text=" "
@@ -107,6 +108,14 @@
 	
     <!--                     Color                     -->
     
+    <TextView 
+    	android:id="@+id/label_color"
+    	android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+   		android:textSize="20dip"
+   		android:text="@string/label_text_light"
+    />
+    
    	<LinearLayout
    	    android:id="@+id/color_sample"
    	    android:layout_width="fill_parent"
@@ -118,13 +127,16 @@
    	        android:layout_width="fill_parent"
    			android:layout_height="wrap_content"
    			android:layout_gravity="center_vertical"
+   			android:gravity="center_vertical"
 		>
    	    	<ImageButton
    	    	    android:id="@+id/btn_apply_color"
    	    		android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
+   				android:layout_height="80dip"
    				android:src="@drawable/change"
    				android:layout_alignParentRight="true"
+   				android:layout_gravity="center_vertical"
+   				android:gravity="center_vertical"
 			/>    
 			<LinearLayout
 				android:layout_width="fill_parent"

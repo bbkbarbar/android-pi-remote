@@ -15,6 +15,7 @@
     <string name="btn_t_text_filter">Szűrő</string>
     <string name="btn_t_text_light">Világítás</string>
     
+    <string name="label_text_light">Világítás színe:</string>
     
 	<string name="error_message_function_of_connect_and_refresh_button">todo: error message</string>
     
