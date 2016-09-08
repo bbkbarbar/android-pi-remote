@@ -23,12 +23,17 @@
     </style>
     
     <style name="TableItemRow1" parent="TableItem">
-        <item name="android:padding">15dip</item>
-        <item name="android:textSize">20dip</item>
+        <item name="android:padding">10dip</item>
+        <item name="android:textSize">33dip</item>
     </style>
     
     <style name="TableItemRow2" parent="TableItem">
         <item name="android:layout_weight">1</item>
+    </style>
+    
+    <style name="TableRowForToggleButtons" parent="TableItem">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">35dip</item>
     </style>
     
     <style name="TableItemCaptionRow" parent="TableItem">

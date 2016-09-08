@@ -22,13 +22,17 @@ import hu.barbar.comm.util.tasker.RGBMessage;
 import hu.barbar.comm.util.tasker.StateMsg;
 import hu.barbar.util.LogManager;
 
+/**
+ * Main activity of Android PiClient (fancy version) 
+ * @author Barbar
+ */
 public class MainActivity extends Activity {
 
-	MainActivity thisApp = null;
+	protected MainActivity thisApp = null;
 	
-	private static final int RED = 0,
-							 GREEN = 1,
-							 BLUE = 2;
+	private static final int RED = 0;
+	private static final int GREEN = 1;
+	private static final int BLUE = 2;
 	
 	private LogManager log = null;
 	private ConfigManager myConfigManager = null;
@@ -43,24 +47,24 @@ public class MainActivity extends Activity {
 	 *  UI - Connect and Refresh button 
 	 */
 	ImageButton btnConnectAndRefresh = null;
-	private static final int FUNCTION_CONNECT = 0,
-							 FUNCTION_REFRESH = 1;
+	private static final int FUNCTION_CONNECT = 0;
+	private static final int FUNCTION_REFRESH = 1;
 	private int funcitonOfConnectButton = FUNCTION_CONNECT;
 	
 	/*
-	 *  UI - Value display textviews
+	 *  UI - Value display textViews
 	 */
-	TextView tvTempAir = null,
-			 tvHumidity = null,
-			 tvTempWater = null;
+	private TextView tvTempAir = null;
+	private TextView tvHumidity = null;
+	private TextView tvTempWater = null;
 	
 	/*
 	 *  UI - Toggle buttons for external devices (light, heater etc)
 	 */
-	ToggleButton btntAirPump = null,
-				 btntFilter = null,
-				 btntHeater = null,
-				 btntLight = null;
+	private ToggleButton btntAirPump = null;
+	private ToggleButton btntFilter = null;
+	private ToggleButton btntHeater = null;
+	private ToggleButton btntLight = null;
 	
 	/*
 	 *  Set color
@@ -81,6 +85,7 @@ public class MainActivity extends Activity {
 		
 		thisApp = MainActivity.this;
 		
+		
 		log = new LogManager(LogManager.Level.INFO) {
 			
 			@Override
@@ -97,7 +102,7 @@ public class MainActivity extends Activity {
 			public void showError(String text) {
 				Log.e("Comm", text);
 			}
-		}; 
+		}; /**/
 
 		initUI();
 		
@@ -105,6 +110,7 @@ public class MainActivity extends Activity {
 		if(instantConnectEnabled){
 			getConnectionParametersAndConnect();
 		}
+		
 	}
 	
 	
@@ -174,7 +180,24 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		//TODO: light
+		btntLight.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				/*
+				 *  wants to turn the lights ON
+				 */
+				if(btntLight.isChecked()){
+					btnSetColor.setEnabled(true);
+					//TODO try it out home (it should works properly)
+					//btntLight.setChecked(false);
+					sendColor(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
+				}else{
+					btnSetColor.setEnabled(false);
+					sendColor(0, 0, 0);
+				}
+			}
+		});
+		
 		
 		/*
 		 *  Color set seekBars
@@ -213,13 +236,13 @@ public class MainActivity extends Activity {
 		 *  Set color button
 		 */
 		btnSetColor = (Button) findViewById(R.id.btn_apply_color);
+		btnSetColor.setEnabled(false);
 		btnSetColor.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				sendColor(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-				sendRequestsForRefresh();
-				
+				if(btntLight.isChecked()){
+					sendColor(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
+				}
 			}
 		});
 		
@@ -265,6 +288,7 @@ public class MainActivity extends Activity {
 			else
 			if(stateMsg.getName().equals("light")){
 				btntLight.setChecked(stateMsg.getValue() > 45);
+				btnSetColor.setEnabled(btntLight.isChecked());
 			}
 			
 		}
@@ -281,15 +305,16 @@ public class MainActivity extends Activity {
 				int IDX_OF_WATER_TEMP = 2;
 				float air   = Float.valueOf(parts[IDX_OF_AIR_TEMP]);
 				float water = Float.valueOf(parts[IDX_OF_WATER_TEMP]);
-				showTemp(air, water);
+				showTempOnUI(air, water);
 			}else{
 				showErrorMessage("Can not find multile temperature value in temp response message: \"" + message.toString() + "\"");
 			}
 		}
 		
 	}
+
 	
-	protected void showTemp(float air, float water){
+	protected void showTempOnUI(float air, float water){
 		tvTempAir.setText(   String.format("%.1f", air)   + "°C" );
 		tvTempWater.setText( String.format("%.2f", water) + "°C" );
 	}
@@ -368,6 +393,16 @@ public class MainActivity extends Activity {
 				//btnConnect.setText("Connect");
 			}catch(Exception doesNotMatterWhenTryToDisconnectBecauseAppClosing){}
 		}
+		showConnectButton();
+	}
+
+	
+	private void showConnectButton(){
+		/*
+		 *  Change refresh button to connect button
+		 */
+		funcitonOfConnectButton = FUNCTION_CONNECT;
+		btnConnectAndRefresh.setImageResource(R.drawable.connect2_s);
 	}
 	
 	
@@ -378,6 +413,7 @@ public class MainActivity extends Activity {
 			comm.sendMessage(request);
 		}else{
 			showErrorMessage("Could not send SetStateOf... -request..");
+			showConnectButton();
 		}
 		
 	}
@@ -385,7 +421,7 @@ public class MainActivity extends Activity {
 	
 	public void sendRequestsForRefresh(){
 		
-		getTemperature();
+		sendRequestToGetTemperature();
 		getStatesOfPerfiherials();
 		 
 	}
@@ -414,6 +450,7 @@ public class MainActivity extends Activity {
 			return true;
 		}else{
 			showErrorMessage("Could not send GetStateOf... -request..");
+			showConnectButton();
 			return false;
 		}
 		
@@ -423,19 +460,20 @@ public class MainActivity extends Activity {
 	/**
 	 * Send request to server to get temperature values.
 	 */
-	private void getTemperature() {
+	private void sendRequestToGetTemperature() {
 		if(comm != null){
 			if(comm.isConnected()){
 				comm.sendMessage(new Msg(Commands.GET_TEMP, Msg.Types.COMMAND));
 			}else{
 				showErrorMessage("Can not get temperature values: Not connected.");
+				showConnectButton();
 			}
 		}
 	}
 	
 	
 	protected void showErrorMessage(String text){
-		Toast.makeText(getApplicationContext(), text, 1).show();
+		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
 	}
 	
 	
@@ -467,13 +505,13 @@ public class MainActivity extends Activity {
 	
 	
 	private int getColorFromSeekBars(){
-		int color = Color.rgb(
+		return Color.rgb(
 			seekBars[RED].getProgress(), 
 			seekBars[GREEN].getProgress(), 
 			seekBars[BLUE].getProgress()
 		);
-		return color;
-	}/**/
+	}
+	
 	
 	private String getColorHex(int c){
 		String res = ""; 
@@ -502,12 +540,15 @@ public class MainActivity extends Activity {
 							blue
 			);
 			
-			if(!comm.sendMessage(m)){
+			if(comm.sendMessage(m)){
+				sendRequestsForRefresh();
+			}else{
 				showErrorMessage("Could not send new color.");
 			}
 			
 		}else{
 			showErrorMessage("Can not send new color:\nNot connected");
+			showConnectButton();
 		}
 	}
 	
