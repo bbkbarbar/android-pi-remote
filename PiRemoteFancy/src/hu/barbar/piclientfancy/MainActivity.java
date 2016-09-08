@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -71,7 +70,7 @@ public class MainActivity extends Activity {
 	 */
 	private LinearLayout colorSample = null;
 	private SeekBar[] seekBars = null;
-	private Button btnSetColor = null;
+	private ImageButton btnSetColor = null;
 	
 	private int selectedColor = 0xFFFFFF;
 	
@@ -235,7 +234,7 @@ public class MainActivity extends Activity {
 		/*
 		 *  Set color button
 		 */
-		btnSetColor = (Button) findViewById(R.id.btn_apply_color);
+		btnSetColor = (ImageButton) findViewById(R.id.btn_apply_color);
 		btnSetColor.setEnabled(false);
 		btnSetColor.setOnClickListener(new OnClickListener() {
 			@Override

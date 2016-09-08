@@ -119,11 +119,11 @@
    			android:layout_height="wrap_content"
    			android:layout_gravity="center_vertical"
 		>
-   	    	<Button
+   	    	<ImageButton
    	    	    android:id="@+id/btn_apply_color"
    	    		android:layout_width="wrap_content"
    				android:layout_height="wrap_content"
-   				android:text="OK"
+   				android:src="@drawable/change"
    				android:layout_alignParentRight="true"
 			/>    
 			<LinearLayout
