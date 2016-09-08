@@ -95,116 +95,74 @@
 			/>
         </TableRow>
 	</TableLayout>
+    	
+   	<LinearLayout
+   	    android:id="@+id/color_sample"
+   	    android:layout_width="fill_parent"
+   		android:layout_height="wrap_content"
+   		android:orientation="vertical"
+   	>
     
-    <RelativeLayout 
-    	android:layout_height="wrap_content"
-    	android:layout_width="fill_parent" 
-    >
-    	<Button
-    		android:id="@+id/btn_connect"
-    		android:text="Connect"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_gravity="center_vertical"
-    		android:layout_alignParentRight="true"  
-    	/>
-    	<LinearLayout
-    	    android:id="@+id/port_container"
-		    android:layout_toLeftOf="@+id/btn_connect"
-		    android:orientation="vertical"
-		    android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
+   	    <RelativeLayout 
+   	        android:layout_width="fill_parent"
+   			android:layout_height="wrap_content"
+   			android:layout_gravity="center_vertical"
 		>
-    	</LinearLayout>
-		<LinearLayout
-		    android:layout_alignParentLeft="true"
-		    android:layout_toLeftOf="@+id/port_container"
-		    android:orientation="vertical"
-		    android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-		>
-	    </LinearLayout>
-	
-   	</RelativeLayout>
-		
-    	<RelativeLayout 
-    		android:layout_width="fill_parent"
-    		android:layout_height="wrap_content"
-    	>
-	    	<Button
-	    		android:id="@+id/btn_select_color"
-	    		android:text="Select color"
-	    		android:layout_width="wrap_content"
-	    		android:layout_height="wrap_content"
-	    		android:layout_gravity="center_vertical"
-	    		android:layout_alignParentLeft="true"  
-	    	/>
-	    	
-	    	<Button
-	    		android:id="@+id/btn_set_pwm"
-	    		android:text="Set pwm output"
-	    		android:layout_width="wrap_content"
-	    		android:layout_height="wrap_content"
-	    		android:layout_gravity="center_vertical"
-	    		android:layout_alignParentRight="true"  
-	    	/>
-	    	
-    	</RelativeLayout>
+   	    	<Button
+   	    	    android:id="@+id/btn_apply_color"
+   	    		android:layout_width="wrap_content"
+   				android:layout_height="wrap_content"
+   				android:text="OK"
+   				android:layout_alignParentRight="true"
+			/>    
+			<LinearLayout
+				android:layout_width="fill_parent"
+   				android:layout_height="wrap_content"
+   				android:layout_toLeftOf="@id/btn_apply_color"
+   				android:layout_alignParentLeft="true"
+   				android:orientation="vertical"
+			>
+				<SeekBar 
+		   	    	android:id="@+id/sb_color_red"
+		   	    	android:layout_width="fill_parent"
+		   			android:layout_height="wrap_content"
+		   			android:paddingLeft="20dip"
+		   			android:paddingRight="20dip"
+		   	    />
+		   	    <SeekBar 
+		   	    	android:id="@+id/sb_color_green"
+		   	    	android:layout_width="fill_parent"
+		   			android:layout_height="wrap_content"
+		   			android:paddingLeft="20dip"
+		   			android:paddingRight="20dip"
+		   	    />
+		   	    <SeekBar 
+		   	    	android:id="@+id/sb_color_blue"
+		   	    	android:layout_width="fill_parent"
+		   			android:layout_height="wrap_content"
+		   			android:paddingLeft="20dip"
+		   			android:paddingRight="20dip"
+		   	    />			    
+			</LinearLayout>
+   	    </RelativeLayout>
+   	    	
+   	    <!-- Other PWM outputs -->
+   	    <SeekBar 
+   	    	android:id="@+id/sb_pwm"
+   	    	android:layout_width="fill_parent"
+   			android:layout_height="wrap_content"
+   			android:max="100"
+   			android:progress="50"
+   			android:paddingLeft="20dip"
+   			android:paddingRight="20dip"
+   	    />
+   	    <TextView 
+   	    	android:id="@+id/tv_pwm_output"
+   	    	android:layout_width="wrap_content"
+   			android:layout_height="wrap_content"
+   			android:text="50%"
+   	    />
+   	
+   	</LinearLayout>
     	
-    	<LinearLayout
-    	    android:id="@+id/color_sample"
-    	    android:layout_width="fill_parent"
-    		android:layout_height="wrap_content"
-    		android:orientation="vertical"
-    	>
-	    	
-    	    <SeekBar 
-    	    	android:id="@+id/sb_color_red"
-    	    	android:layout_width="fill_parent"
-    			android:layout_height="wrap_content"
-    			android:paddingLeft="20dip"
-    			android:paddingRight="20dip"
-    	    />
-    	    <SeekBar 
-    	    	android:id="@+id/sb_color_green"
-    	    	android:layout_width="fill_parent"
-    			android:layout_height="wrap_content"
-    			android:paddingLeft="20dip"
-    			android:paddingRight="20dip"
-    	    />
-    	    <SeekBar 
-    	    	android:id="@+id/sb_color_blue"
-    	    	android:layout_width="fill_parent"
-    			android:layout_height="wrap_content"
-    			android:paddingLeft="20dip"
-    			android:paddingRight="20dip"
-    	    />
-    	    
-
-    	    <!-- Other PWM outputs -->
-    	    <SeekBar 
-    	    	android:id="@+id/sb_pwm"
-    	    	android:layout_width="fill_parent"
-    			android:layout_height="wrap_content"
-    			android:max="100"
-    			android:progress="50"
-    			android:paddingLeft="20dip"
-    			android:paddingRight="20dip"
-    	    />
-    	    <TextView 
-    	    	android:id="@+id/tv_pwm_output"
-    	    	android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:text="50%"
-    	    />
-    	
-    	</LinearLayout>
-    	
-    	<RelativeLayout 
-	    	android:layout_height="wrap_content"
-	    	android:layout_width="fill_parent" 
-	    >
-    		
-    	</RelativeLayout>
-
 </LinearLayout>

@@ -8,7 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -58,6 +62,14 @@ public class MainActivity extends Activity {
 				 btntHeater = null,
 				 btntLight = null;
 	
+	/*
+	 *  Set color
+	 */
+	private LinearLayout colorSample = null;
+	private SeekBar[] seekBars = null;
+	private Button btnSetColor = null;
+	
+	private int selectedColor = 0xFFFFFF;
 	
 	
 	@Override
@@ -123,6 +135,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		
+		
 		/*
 		 *   Value display line
 		 */
@@ -162,6 +175,54 @@ public class MainActivity extends Activity {
 		});
 
 		//TODO: light
+		
+		/*
+		 *  Color set seekBars
+		 */
+		colorSample = (LinearLayout) findViewById(R.id.color_sample);
+
+		seekBars = new SeekBar[3];
+		seekBars[RED] = (SeekBar) findViewById(R.id.sb_color_red);
+		seekBars[GREEN] = (SeekBar) findViewById(R.id.sb_color_green);
+		seekBars[BLUE] = (SeekBar) findViewById(R.id.sb_color_blue);
+		OnSeekBarChangeListener osbcl = new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				
+				selectedColor = getColorFromSeekBars();
+				if(colorSample != null){
+					colorSample.setBackgroundColor(selectedColor);
+				}
+				
+			}
+		};
+		for(int i=0; i<seekBars.length; i++){
+			seekBars[i].setMax(255);
+			seekBars[i].setProgress(255);
+			seekBars[i].setOnSeekBarChangeListener(osbcl);
+		}
+		
+		/*
+		 *  Set color button
+		 */
+		btnSetColor = (Button) findViewById(R.id.btn_apply_color);
+		btnSetColor.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				sendColor(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
+				sendRequestsForRefresh();
+				
+			}
+		});
+		
 	}
 	
 	
@@ -404,7 +465,7 @@ public class MainActivity extends Activity {
 		
 	}
 	
-	/*
+	
 	private int getColorFromSeekBars(){
 		int color = Color.rgb(
 			seekBars[RED].getProgress(), 
@@ -433,7 +494,7 @@ public class MainActivity extends Activity {
 	
 	
 	private void sendColor(int red, int green, int blue){
-		if(comm != null){
+		if(comm != null && comm.isConnected()){
 			RGBMessage m =
 			new RGBMessage("setColor", 
 							red, 
@@ -441,8 +502,12 @@ public class MainActivity extends Activity {
 							blue
 			);
 			
-			comm.sendMessage(m);
+			if(!comm.sendMessage(m)){
+				showErrorMessage("Could not send new color.");
+			}
 			
+		}else{
+			showErrorMessage("Can not send new color:\nNot connected");
 		}
 	}
 	
