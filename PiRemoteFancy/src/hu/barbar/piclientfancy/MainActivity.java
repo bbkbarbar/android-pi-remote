@@ -318,6 +318,7 @@ public class MainActivity extends Activity {
 			}
 		}
 		
+		else
 		
 		/*
 		 *  Process humidity response
