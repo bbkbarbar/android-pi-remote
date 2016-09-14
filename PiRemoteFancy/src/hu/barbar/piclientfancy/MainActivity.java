@@ -337,7 +337,11 @@ public class MainActivity extends Activity {
 	
 	
 	protected void showHumidityOnUI(int humidity){
-		tvHumidity.setText(humidity + "%");
+		if(humidity < 0){
+			tvHumidity.setText("--%");
+		}else{
+			tvHumidity.setText(humidity + "%");
+		}
 	}
 
 	
