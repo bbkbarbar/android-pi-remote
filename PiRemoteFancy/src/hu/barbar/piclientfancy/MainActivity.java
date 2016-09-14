@@ -326,7 +326,12 @@ public class MainActivity extends Activity {
 		if(message.getContent().startsWith("Humidity: ")){
 			String[] parts = message.getContent().split(" ");
 			if(parts.length > 1){
-				int humidityValue = Integer.valueOf(parts[1]);
+				int humidityValue = -1;
+				try{
+					humidityValue = Integer.valueOf(parts[1]);
+				}catch(Exception e){
+					humidityValue = -1;
+				}
 				showHumidityOnUI(humidityValue);
 			}else{
 				showErrorMessage("Can not find humidity value in response message: \"" + message.toString() + "\"");
