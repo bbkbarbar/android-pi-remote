@@ -318,6 +318,25 @@ public class MainActivity extends Activity {
 			}
 		}
 		
+		
+		/*
+		 *  Process humidity response
+		 */
+		if(message.getContent().startsWith("Humidity: ")){
+			String[] parts = message.getContent().split(" ");
+			if(parts.length > 1){
+				int humidityValue = Integer.valueOf(parts[1]);
+				showHumidityOnUI(humidityValue);
+			}else{
+				showErrorMessage("Can not find humidity value in response message: \"" + message.toString() + "\"");
+			}
+		}
+		
+	}
+	
+	
+	protected void showHumidityOnUI(int humidity){
+		tvHumidity.setText(humidity + "%");
 	}
 
 	
@@ -430,6 +449,7 @@ public class MainActivity extends Activity {
 		
 		sendRequestToGetTemperature();
 		getStatesOfPerfiherials();
+		sendRequestToGetHumidity();
 		 
 	}
 	
@@ -444,6 +464,21 @@ public class MainActivity extends Activity {
 				// because requests could NOT be send, and user got an error message while first failed send attemption ended.
 				return;
 			}
+		}
+		
+	}
+	
+	
+	private boolean sendRequestToGetHumidity(){
+		
+		Msg requestToGetHumidity = new Msg(Commands.GET_ONLY_HUMIDITY, Msg.Types.REQUEST);
+		if(comm != null && comm.isConnected()){
+			comm.sendMessage(requestToGetHumidity);
+			return true;
+		}else{
+			showErrorMessage("Could not send GetOnlyHumidity... -request..");
+			showConnectButton();
+			return false;
 		}
 		
 	}
